@@ -42,6 +42,9 @@ namespace WPFAutomation.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        private ObservableCollection<PersonModel> _personList = new ObservableCollection<PersonModel>();
+
         public ObservableCollection<PersonModel> PersonList
         {
             get
@@ -55,10 +58,9 @@ namespace WPFAutomation.ViewModel
 
         public WorkerViewModel()
         {
-           // PersonList = new ObservableCollection<PersonModel>();
+            PersonList = new ObservableCollection<PersonModel>(new List<PersonModel>() { new PersonModel() {ID = 1234, FirstName = "TestFirstName",LastName = "TestLastName", DateOfBirth = new DateTime(2020, 08, 16) } });
         }
 
-        private ObservableCollection<PersonModel> _personList = new ObservableCollection<PersonModel>();
 
 
 

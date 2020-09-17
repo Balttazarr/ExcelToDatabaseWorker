@@ -68,19 +68,19 @@ namespace WPFAutomation.Models
 
         //////////////////////////////////////////////////////////////////////////////////////
         static int uniqueID = 1;
-        //public PersonModel()
-        //{
-        //    ID = GetUniqueID();
-        //    FirstName = "Test";
-        //    LastName = "Name";
-        //    DateOfBirth = GetRandomBirthDate();
+        public PersonModel()
+        {
+            //ID = GetUniqueID();
+            //FirstName = "Test";
+            //LastName = "Name";
+            //DateOfBirth = GetRandomBirthDate();
         //    Height = 170;
         //    Weight = 70;
         //    Sex = Sex.Male;
         //    Race = Race.White;
         //    Nationality = Nationality.American;
         //    Profession = Profession.Astronaut;
-        //}
+        }
 
         public int GetUniqueID()
         {

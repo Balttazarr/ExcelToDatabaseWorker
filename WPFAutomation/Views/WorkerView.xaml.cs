@@ -22,7 +22,7 @@ namespace WPFAutomation.Views
     public partial class WorkerView
     {
         public WorkerViewModel loadedExcel = new WorkerViewModel();
-        public WorkerViewModel viewModelModel = new WorkerViewModel();
+        //public WorkerViewModel viewModelModel = new WorkerViewModel();
         public WorkerView()
         {
             InitializeComponent();
@@ -58,9 +58,9 @@ namespace WPFAutomation.Views
 
         private void ReadExcelButton_Click(object sender, RoutedEventArgs e)
         {
-            loadedExcel.ReadExcelFile();
-            //EditableDataGrid.ItemsSource = null;
-            //EditableDataGrid.ItemsSource = viewModelModel.GetPersonModels();
+            FrameworkElement executeButton = sender as FrameworkElement;
+            ((WorkerViewModel)executeButton.DataContext).ReadExcelFile();
+
         }
 
         private void UpdateDatabaseButton_Click(object sender, RoutedEventArgs e)
