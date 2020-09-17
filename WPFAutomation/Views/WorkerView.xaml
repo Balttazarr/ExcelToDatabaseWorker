@@ -14,8 +14,9 @@
         <Grid Name="ParentGridDataTable">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
             <GroupBox Grid.Row="0" >
                 <ToolBarTray >
@@ -33,18 +34,19 @@
                     </ToolBar>
                 </ToolBarTray>
             </GroupBox>
-            <DataGrid Grid.Row="1" Name="EditableDataGrid" HorizontalAlignment="Left" VerticalAlignment="Stretch" 
-                      Width="710" Margin="0,0,0,58"
+            <DataGrid Grid.Row="1" Name="EditableDataGrid" HorizontalAlignment="Left" 
+                      Width="710"
                       ItemsSource="{Binding PersonList}"
+                      SelectedItem="{Binding SelectedPersonModel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                       EnableRowVirtualization="True"
                       AutoGenerateColumns="False"
-                      CanUserSortColumns="False" >
+                      CanUserSortColumns="False" Height="290" VerticalAlignment="Top" Grid.RowSpan="2">
                 <DataGrid.Columns>
-                    
+
                     <DataGridTextColumn Header="ID" Binding="{Binding ID}"  />
                     <DataGridTextColumn Header="First name" Binding="{Binding FirstName}" />
                     <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" />
-                    <DataGridTextColumn Header="Date of birth" Binding="{Binding DateOfBirth}" />
+                    <DataGridTextColumn Header="Date of birth" Binding="{Binding DateOfBirth , StringFormat=dd-MM-yyyy}" />
                     <!--<DataGridTextColumn Header="Height" Binding="{Binding Height}"/>
                     <DataGridTextColumn Header="Weight" Binding="{Binding Weight}"/>
                     <DataGridTextColumn Header="Sex" Binding="{Binding Sex}"/>
@@ -57,14 +59,16 @@
                 
             </DataGrid>-->
         </Grid>
-        <Button x:Name="ReadExcelButton" Content="Load Excel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="425,373,0,0"  Click="ReadExcelButton_Click"/>
-        <TextBox Text="{Binding SelectedFileNamePath}"   HorizontalAlignment="Left" Height="23" Margin="90,370,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="327"  />
-        <Label Content="File name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,367,0,0"/>
-        <Label Content="Sheet:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,394,0,0"/>
-        <ComboBox HorizontalAlignment="Left" Margin="90,398,0,0" VerticalAlignment="Top" Width="140" AutomationProperties.Name="ComboBoxSheet"/>
-        <Button x:Name="SaveExcelButton" Content="Save to Excel " HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="570,373,0,0"  Click="SaveExcelButton_Click"/>
-        <Button Content="Upload Database" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="425,400,0,0"  Opacity="0.3"/>
-        <Button x:Name="UpdateDatabaseButton" Content="Update Database" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="570,400,0,0"  Opacity="0.3" Click="UpdateDatabaseButton_Click"/>
+        <Grid Grid.Row="2">
+            <Button x:Name="ReadExcelButton" Content="Load Excel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="425,343,0,0"  Click="ReadExcelButton_Click"/>
+            <TextBox Text="{Binding SelectedFileNamePath}"   HorizontalAlignment="Left" Height="23" Margin="90,340,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="327"  />
+            <Label Content="File name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,337,0,0"/>
+            <Label Content="Sheet:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,368,0,0"/>
+            <ComboBox HorizontalAlignment="Left" Margin="90,372,0,0" VerticalAlignment="Top" Width="140" AutomationProperties.Name="ComboBoxSheet"/>
+            <Button x:Name="SaveExcelButton" Content="Save to Excel " HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="570,343,0,0"  Click="SaveExcelButton_Click"/>
+            <Button Content="Upload Database" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="425,372,0,0"  Opacity="0.3"/>
+            <Button x:Name="UpdateDatabaseButton" Content="Update Database" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="570,374,0,0"  Opacity="0.3" Click="UpdateDatabaseButton_Click"/>
+        </Grid>
     </Grid>
 
 </UserControl>

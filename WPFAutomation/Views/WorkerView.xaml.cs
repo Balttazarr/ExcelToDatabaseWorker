@@ -41,12 +41,15 @@ namespace WPFAutomation.Views
         //Dodaje jedną osobę do DataGrid
         private void AddPersonButton(object sender, RoutedEventArgs e)
         {
+            FrameworkElement addPerson = sender as FrameworkElement;
+            ((WorkerViewModel)addPerson.DataContext).PersonList.Add(new PersonModel());
 
         }
         //Usuwa jedną osobę z DataGrid
         private void DeletePersonButton(object sender, RoutedEventArgs e)
         {
-
+            FrameworkElement removePerson = sender as FrameworkElement;
+            ((WorkerViewModel)removePerson.DataContext).PersonList.Remove(loadedExcel.SelectedPersonModel);
         }
 
         private void SaveExcelButton_Click(object sender, RoutedEventArgs e)

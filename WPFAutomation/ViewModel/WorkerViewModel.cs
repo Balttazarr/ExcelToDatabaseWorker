@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using WPFAutomation.ExcelExtensions;
 using WPFAutomation.Models;
@@ -56,9 +57,26 @@ namespace WPFAutomation.ViewModel
             }
         }
 
+        PersonModel _selectedPersonModel;
+        public PersonModel SelectedPersonModel
+        {
+            get
+            { return _selectedPersonModel; }
+            set
+            {
+                if (_selectedPersonModel != value )
+                {
+                    _selectedPersonModel = value;
+                    OnPropertyChanged();
+                }
+
+            }
+        }
+
+
         public WorkerViewModel()
         {
-            PersonList = new ObservableCollection<PersonModel>(new List<PersonModel>() { new PersonModel() {ID = 1234, FirstName = "TestFirstName",LastName = "TestLastName", DateOfBirth = new DateTime(2020, 08, 16) } });
+            PersonList = new ObservableCollection<PersonModel>(new List<PersonModel>() { new PersonModel() { ID = 1234, FirstName = "TestFirstName", LastName = "TestLastName", DateOfBirth = new DateTime(2020, 08, 16) } });
         }
 
 
@@ -89,7 +107,7 @@ namespace WPFAutomation.ViewModel
 
 
 
-        
+
 
         public void LoadPersonModel()
         {

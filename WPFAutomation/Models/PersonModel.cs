@@ -70,10 +70,10 @@ namespace WPFAutomation.Models
         static int uniqueID = 1;
         public PersonModel()
         {
-            //ID = GetUniqueID();
-            //FirstName = "Test";
-            //LastName = "Name";
-            //DateOfBirth = GetRandomBirthDate();
+            ID = GetUniqueID();
+            FirstName = "Test";
+            LastName = "Name";
+            DateOfBirth = GetRandomBirthDate();
         //    Height = 170;
         //    Weight = 70;
         //    Sex = Sex.Male;
