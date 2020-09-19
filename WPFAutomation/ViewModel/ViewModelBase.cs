@@ -11,10 +11,11 @@ namespace WPFAutomation.ViewModel
     public class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        //why virtual???? You do not override it anywhere - MD
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }

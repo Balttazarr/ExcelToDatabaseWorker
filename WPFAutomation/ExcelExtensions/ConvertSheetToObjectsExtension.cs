@@ -15,21 +15,23 @@ namespace WPFAutomation.ExcelExtensions
 
         public static T ReadFromExcel<T>(ExcelWorksheet excelWorksheet, bool hasHeader = true)
         {
+            //I'd implement in here RowModel and ColumnModel logic - code below is hard to read - MD
             using (var excelPack = new ExcelPackage())
             {
 
                 //Get all details as DataTable -because Datatable make life easy :)
                 DataTable excelasTable = new DataTable();
-                foreach (var firstRowCell in excelWorksheet.Cells[1, 1, 1, excelWorksheet.Dimension.End.Column])
+
+                //lambdas for the win! - MD
+                foreach (var firstRowCell in excelWorksheet.Cells[1, 1, 1, excelWorksheet.Dimension.End.Column]
+                    .Where(firstRowCell => !string.IsNullOrEmpty(firstRowCell.Text)))
                 {
-                    //Get colummn details
-                    if (!string.IsNullOrEmpty(firstRowCell.Text))
-                    {
-                        string firstColumn = string.Format("Column {0}", firstRowCell.Start.Column);
-                        excelasTable.Columns.Add(hasHeader ? firstRowCell.Text : firstColumn);
-                    }
+                    string firstColumn = string.Format("Column {0}", firstRowCell.Start.Column);
+                    excelasTable.Columns.Add(hasHeader ? firstRowCell.Text : firstColumn);
                 }
+
                 var startRow = hasHeader ? 2 : 1;
+
                 //Get row details
                 for (int rowNum = startRow; rowNum <= excelWorksheet.Dimension.End.Row; rowNum++)
                 {

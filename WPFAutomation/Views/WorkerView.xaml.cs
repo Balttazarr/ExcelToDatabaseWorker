@@ -49,6 +49,8 @@ namespace WPFAutomation.Views
         private void DeletePersonButton(object sender, RoutedEventArgs e)
         {
             FrameworkElement removePerson = sender as FrameworkElement;
+
+            //you try to remove something from empty model list - MD
             ((WorkerViewModel)removePerson.DataContext).PersonList.Remove(loadedExcel.SelectedPersonModel);
         }
 

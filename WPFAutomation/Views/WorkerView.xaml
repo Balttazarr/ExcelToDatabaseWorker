@@ -40,6 +40,7 @@
                       SelectedItem="{Binding SelectedPersonModel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                       EnableRowVirtualization="True"
                       AutoGenerateColumns="False"
+                      CanUserAddRows="false"
                       CanUserSortColumns="False" Height="290" VerticalAlignment="Top" Grid.RowSpan="2">
                 <DataGrid.Columns>
 

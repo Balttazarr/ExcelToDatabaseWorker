@@ -22,7 +22,10 @@ namespace WPFAutomation
 
         public void SaveToExcel(List<PersonModel> listToSave)
         {
-            ExcelPackage pck = new ExcelPackage();
+            //think about splitting code below into more methods - MD
+            var pck = new ExcelPackage();
+
+            //think about saving those strings into consts or into some config
             pck.Workbook.Properties.Author = "Ladek Ryzwa";
             pck.Workbook.Properties.Title = "FromDataGridToExcel";
             pck.Workbook.Properties.Company = "MyFuckingOwnCompany";
