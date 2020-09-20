@@ -22,6 +22,7 @@ namespace WPFAutomation.Views
     public partial class WorkerView
     {
         public WorkerViewModel loadedExcel = new WorkerViewModel();
+
         //public WorkerViewModel viewModelModel = new WorkerViewModel();
         public WorkerView()
         {
@@ -50,8 +51,7 @@ namespace WPFAutomation.Views
         {
             FrameworkElement removePerson = sender as FrameworkElement;
 
-            //you try to remove something from empty model list - MD
-            ((WorkerViewModel)removePerson.DataContext).PersonList.Remove(loadedExcel.SelectedPersonModel);
+            ((WorkerViewModel)removePerson.DataContext).PersonList.Remove((PersonModel)EditableDataGrid.SelectedItem);
         }
 
         private void SaveExcelButton_Click(object sender, RoutedEventArgs e)
@@ -71,7 +71,9 @@ namespace WPFAutomation.Views
             //example of choice before clearing list
             if (!personList.Count.Equals(0))
             {
-                if (MessageBox.Show("Do you want to load new excel file and clear current list?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Do you want to load new excel file and clear current list?", "Question",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     // Clears list after loading excel and then loads new list from file 
                     personList.Clear();
@@ -79,8 +81,7 @@ namespace WPFAutomation.Views
                     return;
                 }
                 else return;
-            }
-                
+            }                
 
             // Clears list after loading excel and then loads new list from file 
             personList.Clear();
