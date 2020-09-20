@@ -63,7 +63,10 @@ namespace WPFAutomation.Views
 
         private void ReadExcelButton_Click(object sender, RoutedEventArgs e)
         {
+            
             FrameworkElement executeButton = sender as FrameworkElement;
+            // Clears list after loading excel and then loads new list from file 
+            ((WorkerViewModel)executeButton.DataContext).PersonList.Clear();
             ((WorkerViewModel)executeButton.DataContext).ReadExcelFile();
 
         }
