@@ -50,8 +50,9 @@ namespace WPFAutomation.Views
         private void DeletePersonButton(object sender, RoutedEventArgs e)
         {
             FrameworkElement removePerson = sender as FrameworkElement;
+            var dataContextPerson = ((WorkerViewModel)removePerson.DataContext);
 
-            ((WorkerViewModel)removePerson.DataContext).PersonList.Remove((PersonModel)EditableDataGrid.SelectedItem);
+            dataContextPerson.PersonList.Remove(dataContextPerson.SelectedPersonModel);
         }
 
         private void SaveExcelButton_Click(object sender, RoutedEventArgs e)
@@ -96,6 +97,13 @@ namespace WPFAutomation.Views
         private void EditableDataGrid_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
         {
 
+        }
+
+        private void EditableDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedPerson = sender as FrameworkElement;
+
+            ((WorkerViewModel)selectedPerson.DataContext).SelectedPersonModel = (PersonModel)EditableDataGrid.SelectedItem;
         }
     }
 }
