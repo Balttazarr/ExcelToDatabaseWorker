@@ -65,10 +65,26 @@ namespace WPFAutomation.Views
         {
             
             FrameworkElement executeButton = sender as FrameworkElement;
-            // Clears list after loading excel and then loads new list from file 
-            ((WorkerViewModel)executeButton.DataContext).PersonList.Clear();
-            ((WorkerViewModel)executeButton.DataContext).ReadExcelFile();
 
+            var personList = ((WorkerViewModel)executeButton.DataContext).PersonList;
+
+            //example of choice before clearing list
+            if (!personList.Count.Equals(0))
+            {
+                if (MessageBox.Show("Do you want to load new excel file and clear current list?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    // Clears list after loading excel and then loads new list from file 
+                    personList.Clear();
+                    ((WorkerViewModel)executeButton.DataContext).ReadExcelFile();
+                    return;
+                }
+                else return;
+            }
+                
+
+            // Clears list after loading excel and then loads new list from file 
+            personList.Clear();
+            ((WorkerViewModel)executeButton.DataContext).ReadExcelFile();
         }
 
         private void UpdateDatabaseButton_Click(object sender, RoutedEventArgs e)
