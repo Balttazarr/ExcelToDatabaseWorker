@@ -12,8 +12,13 @@ namespace WPFAutomation.ExcelExtensions
 {
     public class ExcelLoad
     {
+        //why was it public? - MD
+        //and why is it declared in here if you do not use it anywhere?
+        //don't always make 'new' for every variable at the start of declaration - sometimes it does not have to be fully declared at the certain time
+        //and is gonna be used somewhere far in the code
 
-        public List<string> excelData = new List<string>();
+        private List<string> excelData = new List<string>();
+
         public ExcelLoad()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -23,19 +28,16 @@ namespace WPFAutomation.ExcelExtensions
         {
 
             // path to your excel file
-            FileInfo fileInfo = new FileInfo(selectedFileNamePath);
+            //vars for the win - MD
+            var fileInfo = new FileInfo(selectedFileNamePath);
 
-            ExcelPackage package = new ExcelPackage(fileInfo);
-            ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault();
+            var package = new ExcelPackage(fileInfo);
+            var worksheet = package.Workbook.Worksheets.FirstOrDefault();
 
 
-            IEnumerable<PersonModel> newCollection = ConvertSheetToObjectsExtension.ReadFromExcel<List<PersonModel>>(worksheet,true);
+            var newCollection = ConvertSheetToObjectsExtension.ReadFromExcel<List<PersonModel>>(worksheet, true);
 
             return newCollection;
-
         }
-
-
-
     }
 }

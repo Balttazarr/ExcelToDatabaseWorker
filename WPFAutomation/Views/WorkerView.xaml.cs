@@ -22,6 +22,7 @@ namespace WPFAutomation.Views
     public partial class WorkerView
     {
         public WorkerViewModel loadedExcel = new WorkerViewModel();
+
         //public WorkerViewModel viewModelModel = new WorkerViewModel();
         public WorkerView()
         {
@@ -49,7 +50,9 @@ namespace WPFAutomation.Views
         private void DeletePersonButton(object sender, RoutedEventArgs e)
         {
             FrameworkElement removePerson = sender as FrameworkElement;
-            ((WorkerViewModel)removePerson.DataContext).PersonList.Remove(loadedExcel.SelectedPersonModel);
+            var dataContextPerson = ((WorkerViewModel)removePerson.DataContext);
+
+            dataContextPerson.PersonList.Remove(dataContextPerson.SelectedPersonModel);
         }
 
         private void SaveExcelButton_Click(object sender, RoutedEventArgs e)
@@ -61,9 +64,29 @@ namespace WPFAutomation.Views
 
         private void ReadExcelButton_Click(object sender, RoutedEventArgs e)
         {
+            
             FrameworkElement executeButton = sender as FrameworkElement;
-            ((WorkerViewModel)executeButton.DataContext).ReadExcelFile();
 
+            var personList = ((WorkerViewModel)executeButton.DataContext).PersonList;
+
+            //example of choice before clearing list
+            if (!personList.Count.Equals(0))
+            {
+                if (MessageBox.Show("Do you want to load new excel file and clear current list?", "Question",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    // Clears list after loading excel and then loads new list from file 
+                    personList.Clear();
+                    ((WorkerViewModel)executeButton.DataContext).ReadExcelFile();
+                    return;
+                }
+                else return;
+            }                
+
+            // Clears list after loading excel and then loads new list from file 
+            personList.Clear();
+            ((WorkerViewModel)executeButton.DataContext).ReadExcelFile();
         }
 
         private void UpdateDatabaseButton_Click(object sender, RoutedEventArgs e)
@@ -74,6 +97,13 @@ namespace WPFAutomation.Views
         private void EditableDataGrid_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
         {
 
+        }
+
+        private void EditableDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedPerson = sender as FrameworkElement;
+
+            ((WorkerViewModel)selectedPerson.DataContext).SelectedPersonModel = (PersonModel)EditableDataGrid.SelectedItem;
         }
     }
 }

@@ -89,11 +89,13 @@ namespace WPFAutomation.Models
 
         public DateTime GetRandomBirthDate()
         {
+            //maybe create minDateValue instead of random? - MD
             DateTime start = new DateTime(1970, 1, 1);
             int range = (DateTime.Today - start).Days;
             return start.AddDays(_gen.Next(range));
         }
 
+        //imho all declared variables should be on the top of the class - MD
         private Random _gen = new Random();
 
         private int _ID;
