@@ -1,4 +1,5 @@
 ﻿using OfficeOpenXml;
+using OfficeOpenXml.Table;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,15 +30,18 @@ namespace WPFAutomation.ExcelExtensions
 
             // path to your excel file
             //vars for the win - MD
-            var fileInfo = new FileInfo(selectedFileNamePath);
+            var path = new FileInfo(selectedFileNamePath);
 
-            var package = new ExcelPackage(fileInfo);
-            var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+            using (var package = new ExcelPackage(path))
+            {
+                var workbook = package.Workbook;
+                var worksheet = workbook.Worksheets.First();
+                var col = worksheet.ToRowModel();
 
+                //var newCollection = ConvertSheetToObjectsExtension.ReadFromExcel<List<PersonModel>>(worksheet, true);
 
-            var newCollection = ConvertSheetToObjectsExtension.ReadFromExcel<List<PersonModel>>(worksheet, true);
-
-            return newCollection;
+                return new List<PersonModel>();
+            }
         }
     }
 }

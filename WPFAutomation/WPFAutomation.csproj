@@ -66,10 +66,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EnumExtensions\EnumHelper.cs" />
     <Compile Include="ExcelExtensions\ConvertSheetToObjectsExtension.cs" />
     <Compile Include="ExcelExtensions\ExcelLoad.cs" />
+    <Compile Include="Models\ColumnModel.cs" />
+    <Compile Include="Models\Enums\IntegratedColumns.cs" />
     <Compile Include="Models\Enums\Sex.cs" />
     <Compile Include="ExcelExtensions\ExcelSave.cs" />
+    <Compile Include="Models\RowModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\WorkerViewModel.cs" />
     <Compile Include="Views\WorkerView.xaml.cs">
