@@ -1,4 +1,5 @@
 ﻿using OfficeOpenXml;
+using OfficeOpenXml.Table;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using WPFAutomation.EnumExtensions;
 using WPFAutomation.Models;
+using WPFAutomation.Models.Enums;
+using WPFAutomation.RowModelExtensions;
 
 namespace WPFAutomation.ExcelExtensions
 {
@@ -16,8 +20,6 @@ namespace WPFAutomation.ExcelExtensions
         //and why is it declared in here if you do not use it anywhere?
         //don't always make 'new' for every variable at the start of declaration - sometimes it does not have to be fully declared at the certain time
         //and is gonna be used somewhere far in the code
-
-        private List<string> excelData = new List<string>();
 
         public ExcelLoad()
         {
@@ -29,15 +31,36 @@ namespace WPFAutomation.ExcelExtensions
 
             // path to your excel file
             //vars for the win - MD
-            var fileInfo = new FileInfo(selectedFileNamePath);
+            var path = new FileInfo(selectedFileNamePath);
 
-            var package = new ExcelPackage(fileInfo);
-            var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+            using (var package = new ExcelPackage(path))
+            {
+                var workbook = package.Workbook;
+                var worksheet = workbook.Worksheets.First();
 
+                return ConvertRowDataToPersonModel(worksheet.ToRowModel());
+            }
+        }
 
-            var newCollection = ConvertSheetToObjectsExtension.ReadFromExcel<List<PersonModel>>(worksheet, true);
+        private IEnumerable<PersonModel> ConvertRowDataToPersonModel(List<RowModel> rowData)
+        {
+            var personModelList = new List<PersonModel>();
 
-            return newCollection;
+            foreach (var row in rowData)
+            {
+                personModelList.Add
+                    (
+                        new PersonModel()
+                        {
+                            ID = Convert.ToInt32(row.GetColumnValue(EnumHelper.GetDescription((IntegratedColumns)0))),
+                            FirstName = (string)row.GetColumnValue(EnumHelper.GetDescription((IntegratedColumns)1)),
+                            LastName = (string)row.GetColumnValue(EnumHelper.GetDescription((IntegratedColumns)2)),
+                            DateOfBirth = Convert.ToDateTime(row.GetColumnValue(EnumHelper.GetDescription((IntegratedColumns)3)))
+                        }
+                    );
+            }
+
+            return personModelList;
         }
     }
 }
