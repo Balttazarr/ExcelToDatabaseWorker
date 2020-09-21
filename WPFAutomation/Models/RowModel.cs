@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WPFAutomation.Models
 {
-    class RowModel
+    public class RowModel
     {
         public List<ColumnModel> Columns { get; set; }
         public bool ValidationPassed { get; set; }

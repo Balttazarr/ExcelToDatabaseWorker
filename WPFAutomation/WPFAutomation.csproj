@@ -73,7 +73,10 @@
     <Compile Include="Models\Enums\IntegratedColumns.cs" />
     <Compile Include="Models\Enums\Sex.cs" />
     <Compile Include="ExcelExtensions\ExcelSave.cs" />
+    <Compile Include="Models\Interfaces\IStaticData.cs" />
     <Compile Include="Models\RowModel.cs" />
+    <Compile Include="Models\StaticData.cs" />
+    <Compile Include="RowModelExtensions\RowModelExtension.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\WorkerViewModel.cs" />
     <Compile Include="Views\WorkerView.xaml.cs">

@@ -7,7 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using WPFAutomation.EnumExtensions;
 using WPFAutomation.Models;
+using WPFAutomation.Models.Enums;
+using WPFAutomation.RowModelExtensions;
 
 namespace WPFAutomation.ExcelExtensions
 {
@@ -17,8 +20,6 @@ namespace WPFAutomation.ExcelExtensions
         //and why is it declared in here if you do not use it anywhere?
         //don't always make 'new' for every variable at the start of declaration - sometimes it does not have to be fully declared at the certain time
         //and is gonna be used somewhere far in the code
-
-        private List<string> excelData = new List<string>();
 
         public ExcelLoad()
         {
@@ -36,12 +37,30 @@ namespace WPFAutomation.ExcelExtensions
             {
                 var workbook = package.Workbook;
                 var worksheet = workbook.Worksheets.First();
-                var col = worksheet.ToRowModel();
 
-                //var newCollection = ConvertSheetToObjectsExtension.ReadFromExcel<List<PersonModel>>(worksheet, true);
-
-                return new List<PersonModel>();
+                return ConvertRowDataToPersonModel(worksheet.ToRowModel());
             }
+        }
+
+        private IEnumerable<PersonModel> ConvertRowDataToPersonModel(List<RowModel> rowData)
+        {
+            var personModelList = new List<PersonModel>();
+
+            foreach (var row in rowData)
+            {
+                personModelList.Add
+                    (
+                        new PersonModel()
+                        {
+                            ID = Convert.ToInt32(row.GetColumnValue(EnumHelper.GetDescription((IntegratedColumns)0))),
+                            FirstName = (string)row.GetColumnValue(EnumHelper.GetDescription((IntegratedColumns)1)),
+                            LastName = (string)row.GetColumnValue(EnumHelper.GetDescription((IntegratedColumns)2)),
+                            DateOfBirth = Convert.ToDateTime(row.GetColumnValue(EnumHelper.GetDescription((IntegratedColumns)3)))
+                        }
+                    );
+            }
+
+            return personModelList;
         }
     }
 }

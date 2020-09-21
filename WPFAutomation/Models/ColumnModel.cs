@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace WPFAutomation.Models
 {
-    class ColumnModel
+    public class ColumnModel
     {
         public string ColumnHeader { get; set; }
-        public string ColumnValue { get; set; }
+        public object ColumnValue { get; set; }
         public bool ValidationPassed { get; set; }
         public string FailedReason { get; set; }
     }
