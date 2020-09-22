@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Media;
 using WPFAutomation.ExcelExtensions;
 using WPFAutomation.Models;
+using System.Configuration;
 
 namespace WPFAutomation.ViewModel
 {
@@ -19,22 +20,10 @@ namespace WPFAutomation.ViewModel
     {
         //get rid off innecessary commented code - MD
 
-        //private List<PersonModel> _listOfPeople = new List<PersonModel>();
-        //public List<PersonModel> ListOfPeople
-        //{
-        //    get => _listOfPeople;
-        //    set
-        //    {
-        //        _listOfPeople = new List<PersonModel>(value);
-        //        OnPropertyChanged();
-        //    }
-        //}
-
-        
         public string SelectedFileNamePath
         {
             get
-            { 
+            {
                 return _selectedFileNamePath;
             }
             set
@@ -54,11 +43,11 @@ namespace WPFAutomation.ViewModel
                 OnPropertyChanged();
             }
         }
-        
+
         public PersonModel SelectedPersonModel
         {
             get
-            { 
+            {
                 return _selectedPersonModel;
             }
             set
@@ -79,6 +68,8 @@ namespace WPFAutomation.ViewModel
         private ObservableCollection<PersonModel> _personList = new ObservableCollection<PersonModel>();
         private PersonModel _selectedPersonModel;
         private ExcelLoad excelLoad = new ExcelLoad();
+        private ExcelSave excelSave = new ExcelSave();
+
 
         private string _selectedFileNamePath;
 
@@ -93,10 +84,10 @@ namespace WPFAutomation.ViewModel
             //use var if we clearly know what variable type we create - MD
             var openFileDialog = new OpenFileDialog
             {
-                InitialDirectory = @"C:\Users\CzarnyPotwor\Desktop",
-                Filter = "Excel files (*.xlsx)|*.xlsx",
-                FilterIndex = 0,
-                RestoreDirectory = true
+                InitialDirectory = ConfigurationManager.AppSettings["InitialDirectory"],
+                Filter = ConfigurationManager.AppSettings["Filter"],
+                FilterIndex = int.Parse(ConfigurationManager.AppSettings["FilterIndex"]),
+                RestoreDirectory = bool.Parse(ConfigurationManager.AppSettings["RestoreDirectory"])
             };
 
             if (openFileDialog.ShowDialog() == true)
@@ -111,10 +102,11 @@ namespace WPFAutomation.ViewModel
             }
         }
 
-        public void LoadPersonModel()
+        public void SaveExcelFile(ObservableCollection<PersonModel> personModels)
         {
-            //ListOfPeople.Add(new PersonModel { });
-            //excelHelperUnitSave.SaveToExcel(peopleList);
+
+            excelSave.SaveToExcel(personModels.ToList());
         }
+
     }
 }

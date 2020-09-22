@@ -27,26 +27,22 @@ namespace WPFAutomation.Views
         public WorkerView()
         {
             InitializeComponent();
-            //EditableDataGrid.ItemsSource = viewModelModel.GetPersonModels();
 
-            //viewModelModel = new WorkerViewModel();
-            //DataContext = viewModelModel;
-            ///var loadedExcel = new WorkerViewModel();
         }
 
         private void OnWindowLoaded(object sender, RoutedEventArgs e)
         {
-            //EditableDataGrid.ItemsSource = viewModelModel.ListOfPeople;
-            //EditableDataGrid.ItemsSource = viewModelModel.GetPersonModels();
+
         }
-        //Dodaje jedną osobę do DataGrid
+        //Adds one object from EditableDataGrid
         private void AddPersonButton(object sender, RoutedEventArgs e)
         {
             FrameworkElement addPerson = sender as FrameworkElement;
             ((WorkerViewModel)addPerson.DataContext).PersonList.Add(new PersonModel());
 
         }
-        //Usuwa jedną osobę z DataGrid
+
+        //Deletes one object from EditableDataGrid
         private void DeletePersonButton(object sender, RoutedEventArgs e)
         {
             FrameworkElement removePerson = sender as FrameworkElement;
@@ -55,16 +51,30 @@ namespace WPFAutomation.Views
             dataContextPerson.PersonList.Remove(dataContextPerson.SelectedPersonModel);
         }
 
+        //Saves the EditableDataGrid to .xlsx file
         private void SaveExcelButton_Click(object sender, RoutedEventArgs e)
-        {
-            //TODO
-            //loadedExcel.LoadPersonModel();
- 
+        { 
+            FrameworkElement saveButton = sender as FrameworkElement;
+            var personList = ((WorkerViewModel)saveButton.DataContext).PersonList;
+
+            if (personList.Count != 0)
+            {
+                ((WorkerViewModel)saveButton.DataContext).SaveExcelFile(personList);
+            }
+            else
+            {
+                if (MessageBox.Show("There are no people added to the grid. Please add at least one person before saving to a spreadsheet", "Saving error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error) == MessageBoxResult.OK)
+                {
+                    return;
+                }
+            }
         }
 
         private void ReadExcelButton_Click(object sender, RoutedEventArgs e)
         {
-            
+
             FrameworkElement executeButton = sender as FrameworkElement;
 
             var personList = ((WorkerViewModel)executeButton.DataContext).PersonList;
@@ -82,7 +92,7 @@ namespace WPFAutomation.Views
                     return;
                 }
                 else return;
-            }                
+            }
 
             // Clears list after loading excel and then loads new list from file 
             personList.Clear();

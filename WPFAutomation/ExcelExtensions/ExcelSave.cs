@@ -23,20 +23,10 @@ namespace WPFAutomation
         public void SaveToExcel(List<PersonModel> listToSave)
         {
             //think about splitting code below into more methods - MD
-            var pck = new ExcelPackage();
-
-            //think about saving those strings into consts or into some config
-            pck.Workbook.Properties.Author = "Ladek Ryzwa";
-            pck.Workbook.Properties.Title = "FromDataGridToExcel";
-            pck.Workbook.Properties.Company = "MyFuckingOwnCompany";
-
-            List<string> lstHeader = new List<string>() { "ID", "First Name", "Last Name", "Date of Birth" };//, "Height", "Weight", "Sex", "Race", "Nationality ", "Things Owned", "Languages" };
-
-
-            var ws = pck.Workbook.Worksheets.Add("TestWorkSheet");
-            ws.Column(2).Width = 10;
-            ws.Column(3).Width = 10;
-            ws.Column(4).Width = 15;
+            ExcelPackage pck;
+            List<string> lstHeader;
+            ExcelWorksheet ws;
+            ExcelConfig(out pck, out lstHeader, out ws);
 
 
             //Header Section
@@ -51,7 +41,7 @@ namespace WPFAutomation
                 ws.Cells[i + 2, 1].Value = listToSave[i].ID;
                 ws.Cells[i + 2, 2].Value = listToSave[i].FirstName;
                 ws.Cells[i + 2, 3].Value = listToSave[i].LastName;
-                ws.Cells[i + 2, 4].Value = listToSave[i].DateOfBirth; 
+                ws.Cells[i + 2, 4].Value = listToSave[i].DateOfBirth;
                 ws.Cells[i + 2, 4].Style.Numberformat.Format = "dd-mm-yyyy";
                 //ws.Cells[i + 2, 5].Value = listToSave[i].Height;
                 //ws.Cells[i + 2, 6].Value = listToSave[i].Weight;
@@ -72,6 +62,20 @@ namespace WPFAutomation
             {
                 File.WriteAllBytes(dialog.FileName, fileText);
             }
+        }
+
+        private static void ExcelConfig(out ExcelPackage pck, out List<string> lstHeader, out ExcelWorksheet ws)
+        {
+            pck = new ExcelPackage();
+
+            //think about saving those strings into consts or into some config
+            pck.Workbook.Properties.Author = "Ladek Ryzwa";
+
+            lstHeader = new List<string>() { "ID", "First Name", "Last Name", "Date of Birth" };
+            ws = pck.Workbook.Worksheets.Add("TestWorkSheet");
+            ws.Column(2).Width = 10;
+            ws.Column(3).Width = 10;
+            ws.Column(4).Width = 15;
         }
     }
 }
