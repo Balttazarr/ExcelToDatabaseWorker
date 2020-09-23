@@ -5,17 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFAutomation.ViewModel"
         Loaded="OnWindowLoaded"
-        mc:Ignorable="d">
+        mc:Ignorable="d" MinHeight="520" Height="561">
 
     <UserControl.DataContext>
         <local:WorkerViewModel />
     </UserControl.DataContext>
-    <Grid Margin="5,5,5,5">
+    <Grid Margin="5,5,5,5" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
         <Grid Name="ParentGridDataTable">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <GroupBox Grid.Row="0" >
@@ -41,7 +45,7 @@
                       EnableRowVirtualization="True"
                       AutoGenerateColumns="False"
                       CanUserAddRows="false"
-                      CanUserSortColumns="False" Height="290" VerticalAlignment="Top" Grid.RowSpan="2" SelectionChanged="EditableDataGrid_SelectionChanged">
+                      CanUserSortColumns="False" Height="345" VerticalAlignment="Bottom" Grid.RowSpan="3" SelectionChanged="EditableDataGrid_SelectionChanged" Margin="0,0,0,10">
                 <DataGrid.Columns>
 
                     <DataGridTextColumn Header="ID" Binding="{Binding ID}"  />
@@ -61,14 +65,18 @@
             </DataGrid>-->
         </Grid>
         <Grid Grid.Row="2">
-            <Button x:Name="ReadExcelButton" Content="Load Excel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="425,343,0,0"  Click="ReadExcelButton_Click"/>
-            <TextBox Text="{Binding SelectedFileNamePath}"   HorizontalAlignment="Left" Height="23" Margin="90,340,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="327"  />
-            <Label Content="File name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,337,0,0"/>
-            <Label Content="Sheet:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,368,0,0"/>
-            <ComboBox HorizontalAlignment="Left" Margin="90,372,0,0" VerticalAlignment="Top" Width="140" AutomationProperties.Name="ComboBoxSheet"/>
-            <Button x:Name="SaveExcelButton" Content="Save to Excel " HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="570,343,0,0"  Click="SaveExcelButton_Click"/>
-            <Button Content="Upload Database" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="425,372,0,0"  Opacity="0.3"/>
-            <Button x:Name="UpdateDatabaseButton" Content="Update Database" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="570,374,0,0"  Opacity="0.3" Click="UpdateDatabaseButton_Click"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Button x:Name="ReadExcelButton" Grid.Row="0" Content="Load Excel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="425,10,0,0"  Click="ReadExcelButton_Click"/>
+            <TextBox Grid.Row="0" Text="{Binding SelectedFileNamePath}"   HorizontalAlignment="Left" Height="23" Margin="70,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="327"  />
+            <Label  Grid.Row="0" Content="File name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,0,0"/>
+            <Label Content="Sheet:" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,58,0,0"/>
+            <ComboBox  Grid.Row="0" HorizontalAlignment="Left" Margin="70,58,0,0" VerticalAlignment="Top" Width="140" />
+            <Button x:Name="SaveExcelButton" Grid.Row="0" Content="Save to Excel " HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="570,10,0,0"  Click="SaveExcelButton_Click"/>
+            <Button Content="Upload Database" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="425,58,0,0"  Opacity="0.3"/>
+            <Button x:Name="UpdateDatabaseButton" Grid.Row="0" Content="Update Database" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="570,58,0,0"  Opacity="0.3" Click="UpdateDatabaseButton_Click"/>
         </Grid>
     </Grid>
 

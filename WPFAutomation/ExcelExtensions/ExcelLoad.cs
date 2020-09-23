@@ -1,12 +1,8 @@
 ﻿using OfficeOpenXml;
-using OfficeOpenXml.Table;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using WPFAutomation.EnumExtensions;
 using WPFAutomation.Models;
 using WPFAutomation.Models.Enums;
@@ -20,6 +16,8 @@ namespace WPFAutomation.ExcelExtensions
         //and why is it declared in here if you do not use it anywhere?
         //don't always make 'new' for every variable at the start of declaration - sometimes it does not have to be fully declared at the certain time
         //and is gonna be used somewhere far in the code
+
+        public List<ExcelWorksheet> Worksheets { get; set; }
 
         public ExcelLoad()
         {
@@ -55,11 +53,9 @@ namespace WPFAutomation.ExcelExtensions
                     {
                         converted = DateTime.FromOADate((double)nextRow.ColumnValue);
                     }
-
                 }
                 personModelList.Add
                     (
-
                         new PersonModel()
                         {
                             ID = Convert.ToInt32(row.GetColumnValue(EnumHelper.GetDescription((IntegratedColumns)0))),
@@ -67,7 +63,7 @@ namespace WPFAutomation.ExcelExtensions
                             LastName = (string)row.GetColumnValue(EnumHelper.GetDescription((IntegratedColumns)2)),
                             DateOfBirth = converted
                         }
-                    ); ;
+                    );
             }
 
             return personModelList;

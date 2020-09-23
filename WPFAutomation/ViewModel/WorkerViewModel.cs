@@ -94,7 +94,7 @@ namespace WPFAutomation.ViewModel
             {
                 SelectedFileNamePath = openFileDialog.FileName;
                 var fromExcelList = excelLoad.LoadExcelFile(SelectedFileNamePath).ToList();
-
+                
                 foreach (var person in fromExcelList)
                 {
                     PersonList.Add(person);

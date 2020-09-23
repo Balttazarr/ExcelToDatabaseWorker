@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views = "clr-namespace:WPFAutomation.Views"
         mc:Ignorable="d"
-        Title="Excel and Database Reader" Height="506" Width="736">
+        Title="Excel and Database Reader" Height="550" Width="736">
     <Grid>
-        <views:WorkerView x:Name = "WorkerViewControl" VerticalAlignment="Center" />
+        <views:WorkerView x:Name = "WorkerViewControl" VerticalAlignment="Center" Margin="0,-36,0,-35" Height="590" />
     </Grid>
 </Window>

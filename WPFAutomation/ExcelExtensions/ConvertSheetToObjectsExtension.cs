@@ -14,16 +14,16 @@ namespace WPFAutomation.ExcelExtensions
 
         public static List<RowModel> ToRowModel(this ExcelWorksheet worksheet)
         {
+            //RowData.Clear();
             var staticData = new StaticData();
             var worksheetCellValues = (object[,])worksheet.Cells.Value;
 
-            for (int i = 1; i < worksheetCellValues.GetUpperBound(0); i++)
-            {
+            for (int i = 1; i < worksheetCellValues.GetUpperBound(0) + 1; i++)
+            {     
                 ColumnData = new List<ColumnModel>();
-
                 for (int j = 0; j < worksheetCellValues.GetUpperBound(1) + 1; j++)
-                {
-                    //here you should create some logic to casting types
+                { 
+                    //here you should create some logic to casting types ///
                     ColumnData.Add
                         (
                             new ColumnModel()
