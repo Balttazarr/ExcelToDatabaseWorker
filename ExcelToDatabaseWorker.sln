@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFAutomation", "WPFAutomat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadExcel.Test", "LoadExcel.Test\LoadExcel.Test.csproj", "{3EC7E231-C416-413C-8EC6-D5507DC9FE21}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFAutomation.DataAccess", "WPFAutomation.DataAccess\WPFAutomation.DataAccess.csproj", "{3F080065-A3AA-48CD-8D47-C0BDED784DA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{3EC7E231-C416-413C-8EC6-D5507DC9FE21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EC7E231-C416-413C-8EC6-D5507DC9FE21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EC7E231-C416-413C-8EC6-D5507DC9FE21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F080065-A3AA-48CD-8D47-C0BDED784DA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F080065-A3AA-48CD-8D47-C0BDED784DA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F080065-A3AA-48CD-8D47-C0BDED784DA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F080065-A3AA-48CD-8D47-C0BDED784DA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

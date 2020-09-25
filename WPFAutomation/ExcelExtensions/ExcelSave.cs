@@ -18,7 +18,7 @@ namespace WPFAutomation
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         }
-        // public List<PersonModel> ListToSaveTest { get; set; }
+
 
         public void SaveToExcel(List<PersonModel> listToSave)
         {
@@ -72,7 +72,7 @@ namespace WPFAutomation
             pck.Workbook.Properties.Author = "Ladek Ryzwa";
 
             lstHeader = new List<string>() { "ID", "First Name", "Last Name", "Date of Birth" };
-            ws = pck.Workbook.Worksheets.Add("TestWorkSheet");
+            ws = pck.Workbook.Worksheets.Add("Worksheet1");
             ws.Column(2).Width = 10;
             ws.Column(3).Width = 10;
             ws.Column(4).Width = 15;

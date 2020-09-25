@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using WPFAutomation.ViewModel;
 
 namespace WPFAutomation.Models
 {
+    [Table("People")]
     public class PersonModel : ViewModelBase
     {
-        
+        [Required]
         public int ID
         {
             get { return _ID; }
@@ -21,6 +24,8 @@ namespace WPFAutomation.Models
                 }
             }
         }
+        [Required]
+        [StringLength(30)]
         public string FirstName
         {
             get { return _firstName; }
@@ -33,6 +38,7 @@ namespace WPFAutomation.Models
                 }
             }
         }
+        [StringLength(30)]
         public string LastName
         {
             get { return _lastName; }
@@ -45,6 +51,7 @@ namespace WPFAutomation.Models
                 }
             }
         }
+        [DataType(DataType.Date)]
         public DateTime DateOfBirth
         {
             get { return _dateOfBirth; }

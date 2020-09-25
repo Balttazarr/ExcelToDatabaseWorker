@@ -66,6 +66,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CommandsHelper\RelayCommand.cs" />
     <Compile Include="EnumExtensions\EnumHelper.cs" />
     <Compile Include="ExcelExtensions\ConvertSheetToObjectsExtension.cs" />
     <Compile Include="ExcelExtensions\ExcelLoad.cs" />

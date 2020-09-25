@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:WPFAutomation.ViewModel"
         Loaded="OnWindowLoaded"
         mc:Ignorable="d" MinHeight="520" Height="561">
+    <UserControl.InputBindings>
+        <KeyBinding Key="Delete" Command="{Binding DeletePersonCommand}"/>
+    </UserControl.InputBindings>
 
     <UserControl.DataContext>
         <local:WorkerViewModel />
@@ -25,12 +28,12 @@
             <GroupBox Grid.Row="0" >
                 <ToolBarTray >
                     <ToolBar>
-                        <Button Click="AddPersonButton">
+                        <Button Command="{Binding AddPersonCommand}">
                             <StackPanel>
                                 <TextBlock Text="Add Person"/>
                             </StackPanel>
                         </Button>
-                        <Button Click="DeletePersonButton">
+                        <Button Command="{Binding DeletePersonCommand}">
                             <StackPanel>
                                 <TextBlock Text="Delete Person"/>
                             </StackPanel>
@@ -41,7 +44,7 @@
             <DataGrid Grid.Row="1" Name="EditableDataGrid" HorizontalAlignment="Left" 
                       Width="710"
                       ItemsSource="{Binding PersonList}"
-                      SelectedItem="{Binding SelectedPersonModel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding SelectedPerson,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                       EnableRowVirtualization="True"
                       AutoGenerateColumns="False"
                       CanUserAddRows="false"
@@ -69,12 +72,12 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Button x:Name="ReadExcelButton" Grid.Row="0" Content="Load Excel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="425,10,0,0"  Click="ReadExcelButton_Click"/>
-            <TextBox Grid.Row="0" Text="{Binding SelectedFileNamePath}"   HorizontalAlignment="Left" Height="23" Margin="70,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="327"  />
+            <Button x:Name="ReadExcelButton" Grid.Row="0" Content="Load Excel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="425,10,0,0"  Command="{Binding ReadExcelCommand}"/>
+            <TextBox Grid.Row="0" Text="{Binding SelectedFileNamePath}"  HorizontalAlignment="Left" Height="23" Margin="70,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="327"  />
             <Label  Grid.Row="0" Content="File name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,0,0"/>
             <Label Content="Sheet:" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,58,0,0"/>
             <ComboBox  Grid.Row="0" HorizontalAlignment="Left" Margin="70,58,0,0" VerticalAlignment="Top" Width="140" />
-            <Button x:Name="SaveExcelButton" Grid.Row="0" Content="Save to Excel " HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="570,10,0,0"  Click="SaveExcelButton_Click"/>
+            <Button x:Name="SaveExcelButton" Grid.Row="0" Content="Save to Excel " HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="570,10,0,0"  Command="{Binding SaveExcelCommand}"/>
             <Button Content="Upload Database" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="425,58,0,0"  Opacity="0.3"/>
             <Button x:Name="UpdateDatabaseButton" Grid.Row="0" Content="Update Database" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="570,58,0,0"  Opacity="0.3" Click="UpdateDatabaseButton_Click"/>
         </Grid>
