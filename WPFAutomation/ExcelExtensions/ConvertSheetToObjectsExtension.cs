@@ -22,8 +22,7 @@ namespace WPFAutomation.ExcelExtensions
             {     
                 ColumnData = new List<ColumnModel>();
                 for (int j = 0; j < worksheetCellValues.GetUpperBound(1) + 1; j++)
-                { 
-                    //here you should create some logic to casting types ///
+                {
                     ColumnData.Add
                         (
                             new ColumnModel()
@@ -33,7 +32,12 @@ namespace WPFAutomation.ExcelExtensions
                                 ValidationPassed = true,
                                 FailedReason = ""
                             }
+
                         );
+                    if (ColumnData[j].ColumnHeader == EnumHelper.GetDescription((IntegratedColumns)3))
+                    {
+                        ColumnData[j].ColumnValue = DateTime.FromOADate((double)ColumnData[j].ColumnValue);
+                    }
                 }
 
                 RowData.Add

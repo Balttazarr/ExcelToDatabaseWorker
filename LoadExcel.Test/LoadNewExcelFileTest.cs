@@ -12,24 +12,19 @@ namespace LoadExcel.Test
     
     public class LoadNewExcelFileTest
     {
-
+        private const string correctFilePath = @"./Resources/People.xlsx";
 
         [Fact]
         public void GetOnlyPeopleFromOneExcel()
         {
-            var PersonListTest = new List<PersonModel>();
+
             //arrange
             var loadExcel = new ExcelLoad();
             //act
-            var loaded = loadExcel.LoadExcelFile(@"C:\Users\CzarnyPotwor\Desktop\People.xlsx");
-            var loaded2 = loadExcel.LoadExcelFile(@"C:\Users\CzarnyPotwor\Desktop\People.xlsx");
-            foreach (var person in loaded)
-            {
-                PersonListTest.Add(person);
-            }
-            var loadedCount = loaded.Count();
+            var result = loadExcel.LoadExcelFile(correctFilePath);
+
             //assert
-            Assert.Equal(10, loadedCount);
+            Assert.Equal(10, result.Count());
         }
     }
 }

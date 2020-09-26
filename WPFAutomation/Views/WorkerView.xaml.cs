@@ -35,17 +35,6 @@ namespace WPFAutomation.Views
 
         }
 
-        //Saves the EditableDataGrid to .xlsx file
-        private void SaveExcelButton_Click(object sender, RoutedEventArgs e)
-        { 
-
-        }
-
-        private void ReadExcelButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void UpdateDatabaseButton_Click(object sender, RoutedEventArgs e)
         {
 
