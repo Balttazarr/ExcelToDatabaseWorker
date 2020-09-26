@@ -14,7 +14,8 @@ namespace WPFAutomation.ExcelExtensions
 
         public static List<RowModel> ToRowModel(this ExcelWorksheet worksheet)
         {
-            //RowData.Clear();
+            RowData = new List<RowModel>();
+
             var staticData = new StaticData();
             var worksheetCellValues = (object[,])worksheet.Cells.Value;
 
