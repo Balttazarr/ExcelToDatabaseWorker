@@ -43,16 +43,13 @@ namespace WPFAutomation.ExcelExtensions
         private IEnumerable<PersonModel> ConvertRowDataToPersonModel(List<RowModel> rowData)
         {
             var personModelList = new List<PersonModel>();
-            DateTime converted = new DateTime();
+            var converted = new DateTime();
             foreach (var row in rowData)
             {
                 //double to DateTime conversion
-                foreach (var nextRow in row.Columns)
+                foreach (var nextRow in row.Columns.Where(c => c.ColumnHeader.Equals(EnumHelper.GetDescription((IntegratedColumns)3))))
                 {
-                    if (nextRow.ColumnHeader == "DateOfBirth")
-                    {
-                        converted = DateTime.FromOADate((double)nextRow.ColumnValue);
-                    }
+                    converted = DateTime.FromOADate((double)nextRow.ColumnValue);
                 }
                 personModelList.Add
                     (
