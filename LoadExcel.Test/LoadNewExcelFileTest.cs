@@ -14,7 +14,7 @@ namespace LoadExcel.Test
     public class LoadNewExcelFileTest
     {
         private const string correctFilePath = @"./Resources/People.xlsx";
-        private const string correctFilePath = @".\Resources\People.xlsx";
+        private const string testName = "Peter";
 
         public LoadNewExcelFileTest() {}
 
@@ -26,14 +26,6 @@ namespace LoadExcel.Test
             var loadExcel = new ExcelLoad();
             //act
             var result = loadExcel.LoadExcelFile(correctFilePath);
-
-            //assert
-            // Arrange        
-            var loadExcel = new ExcelLoad();
-
-            // Act
-            var result = loadExcel.LoadExcelFile(correctFilePath);
-
             // Assert
             Assert.Equal(10, result.Count());
         }
@@ -44,13 +36,29 @@ namespace LoadExcel.Test
             // Arrange
             var path = new FileInfo(correctFilePath);
 
-            var package = new ExcelPackage(path)
+            var package = new ExcelPackage(path);
             var workbook = package.Workbook;
             var worksheet = workbook.Worksheets.First();
 
             // Act
-
-
+            var result = worksheet.ToRowModel();
             // Assert
+            Assert.Equal(10, result.Count());
+
+        }
+
+        [Fact]
+        public void ExcelLoad()
+        {
+
+            //arrange
+            var loadExcel = new ExcelLoad();
+            //act
+            var result = loadExcel.LoadExcelFile(correctFilePath);
+            var foundName = result.Where(w => w.FirstName == testName).FirstOrDefault();
+            // Assert
+            Assert.Equal(testName, foundName.FirstName);
+        }
+
     }
 }

@@ -7,7 +7,7 @@ using WPFAutomation.Models.Enums;
 
 namespace WPFAutomation.ExcelExtensions
 {
-    static class ConvertSheetToObjectsExtension
+    public static class ConvertSheetToObjectsExtension
     {
         private static List<RowModel> RowData { get; set; } = new List<RowModel>();
         private static List<ColumnModel> ColumnData;

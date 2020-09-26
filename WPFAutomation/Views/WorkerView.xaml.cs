@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Server;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,8 @@ namespace WPFAutomation.Views
         public WorkerView()
         {
             InitializeComponent();
+            var dataAccess = new PersonModelDataContext();
+            dataAccess.InsertToDb("456", "ABC", "XYZ", Convert.ToDateTime("05-06-2010"));
 
         }
 

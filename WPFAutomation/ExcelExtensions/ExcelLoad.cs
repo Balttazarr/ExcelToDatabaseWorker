@@ -40,7 +40,7 @@ namespace WPFAutomation.ExcelExtensions
             }
         }
 
-        private IEnumerable<PersonModel> ConvertRowDataToPersonModel(List<RowModel> rowData)
+        public IEnumerable<PersonModel> ConvertRowDataToPersonModel(List<RowModel> rowData)
         {
             var personModelList = new List<PersonModel>();
 
