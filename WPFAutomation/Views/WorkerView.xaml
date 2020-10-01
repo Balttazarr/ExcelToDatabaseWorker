@@ -78,8 +78,8 @@
             <Label Content="Sheet:" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,58,0,0"/>
             <ComboBox  Grid.Row="0" HorizontalAlignment="Left" Margin="70,58,0,0" VerticalAlignment="Top" Width="140" />
             <Button x:Name="SaveExcelButton" Grid.Row="0" Content="Save to Excel " HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="570,10,0,0"  Command="{Binding SaveExcelCommand}"/>
-            <Button Content="Upload Database" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="425,58,0,0"  Opacity="0.3"/>
-            <Button x:Name="UpdateDatabaseButton" Grid.Row="0" Content="Update Database" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="570,58,0,0"  Opacity="0.3" Click="UpdateDatabaseButton_Click"/>
+            <Button Content="Get from Database" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="425,58,0,0"  Opacity="0.3" />
+            <Button x:Name="UpdateDatabaseButton" Grid.Row="0" Content="Save to Database" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="570,58,0,0" Command="{Binding SaveToDbCommand}" />
         </Grid>
     </Grid>
 

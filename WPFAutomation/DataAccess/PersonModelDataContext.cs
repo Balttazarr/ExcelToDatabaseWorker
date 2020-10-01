@@ -7,29 +7,25 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WPFAutomation.Models;
 
 namespace WPFAutomation
 {
     public class PersonModelDataContext
     {
-        private string connectionString = ConfigurationManager.AppSettings["ConnectionString"]; // const?
+        //private readonly string connectionString = ConnectionStringHelper.ConnectionValue("ConnectionString");
 
-        public void InsertToDb(string ID, string FirstName, string lastName, DateTime date)
+        public void InsertToDb(IDbConnection connection, List<PersonModel> listOfPeople )
         {
-            var param = new DynamicParameters();
-            param.Add("@Id", ID);
-            param.Add("@firstName", FirstName);
-            param.Add("@lastName", lastName);
-            param.Add("@date", date);
+            //string ID, string FirstName, string lastName, DateTime date
+            //var param = new DynamicParameters();
+            //param.Add("@Id", ID);
+            //param.Add("@firstName", FirstName);
+            //param.Add("@lastName", lastName);
+            //param.Add("@date", date);
 
-
-            var sql = "INSERT INTO test (ID,FirstName,LastName,DateOfBirth) " +
-                      "VALUES (@Id, @firstName, @lastName, @date)";
-
-            using (IDbConnection db = new SqlConnection(connectionString))
-            {
-                db.Execute(sql,param);
-            }
+            connection.Execute("dbo.spPeople_InsertBulk @ID, @FirstName, @LastName, @DateOfBirth", listOfPeople);
+            
         }
     }
 }

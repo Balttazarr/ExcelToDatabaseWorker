@@ -70,6 +70,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CommandsHelper\RelayCommand.cs" />
+    <Compile Include="DataAccess\ConnectionStringHelper.cs" />
+    <Compile Include="DataAccess\OpenDatabaseConnection.cs" />
     <Compile Include="DataAccess\PersonModelDataContext.cs" />
     <Compile Include="EnumExtensions\EnumHelper.cs" />
     <Compile Include="ExcelExtensions\ConvertSheetToObjectsExtension.cs" />

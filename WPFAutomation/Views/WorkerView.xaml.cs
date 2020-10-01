@@ -1,17 +1,5 @@
-﻿using Microsoft.SqlServer.Server;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using WPFAutomation.Models;
 using WPFAutomation.ViewModel;
 
@@ -27,9 +15,11 @@ namespace WPFAutomation.Views
         //public WorkerViewModel viewModelModel = new WorkerViewModel();
         public WorkerView()
         {
+
+            //OpenDatabaseConnection.GetConnection("ConnectionString");
             InitializeComponent();
-            var dataAccess = new PersonModelDataContext();
-            dataAccess.InsertToDb("456", "ABC", "XYZ", Convert.ToDateTime("05-06-2010"));
+           // var dataAccess = new PersonModelDataContext();
+           // dataAccess.InsertToDb("456", "ABC", "XYZ", Convert.ToDateTime("05-06-2010"));
 
         }
 

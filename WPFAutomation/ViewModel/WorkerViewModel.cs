@@ -5,6 +5,7 @@ using System.Windows;
 using WPFAutomation.ExcelExtensions;
 using WPFAutomation.Models;
 using System.Configuration;
+using System;
 
 namespace WPFAutomation.ViewModel
 {
@@ -66,6 +67,7 @@ namespace WPFAutomation.ViewModel
 
         public RelayCommand SaveExcelCommand { get; private set; }
         public RelayCommand ReadExcelCommand { get; private set; }
+        public RelayCommand SaveToDbCommand { get; private set; }
 
         public WorkerViewModel()
         {
@@ -73,9 +75,28 @@ namespace WPFAutomation.ViewModel
             DeletePersonCommand = new RelayCommand(OnDeletePerson, CanDeletePerson);
             SaveExcelCommand = new RelayCommand(OnSaveExcel);
             ReadExcelCommand = new RelayCommand(OnReadExcel);
+            SaveToDbCommand = new RelayCommand(OnSaveToDB);
+
 
             //I understand it's just a test, but when we have working solution for this one - test should be only in unit tests - MD
             //PersonList = new ObservableCollection<PersonModel>(new List<PersonModel>() { new PersonModel() { ID = 1234, FirstName = "TestFirstName", LastName = "TestLastName", DateOfBirth = new DateTime(2020, 08, 16) } });
+        }
+
+        private void OnSaveToDB()
+        {
+            if (MessageBox.Show("Do you want to save changes in Datagrid?", "Question",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning) == MessageBoxResult.No)
+            {
+                var conn = OpenDatabaseConnection.GetConnection("ConnectionString");
+                var dbContext = new PersonModelDataContext();
+                dbContext.InsertToDb(conn, PersonList.ToList());
+            }
+            else
+            {
+                excelSave.SaveToExcel(PersonList.ToList());
+                return;
+            }
         }
 
         private void OnReadExcel()
@@ -161,7 +182,6 @@ namespace WPFAutomation.ViewModel
 
         public void SaveExcelFile(ObservableCollection<PersonModel> personModels)
         {
-
             excelSave.SaveToExcel(personModels.ToList());
         }
 
