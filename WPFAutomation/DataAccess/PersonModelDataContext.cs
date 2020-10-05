@@ -15,7 +15,7 @@ namespace WPFAutomation
     {
         //private readonly string connectionString = ConnectionStringHelper.ConnectionValue("ConnectionString");
 
-        public void InsertToDb(IDbConnection connection, List<PersonModel> listOfPeople )
+        internal void InsertToDb(IDbConnection connection, List<PersonModel> listOfPeople )
         {
             //string ID, string FirstName, string lastName, DateTime date
             //var param = new DynamicParameters();
@@ -26,6 +26,11 @@ namespace WPFAutomation
 
             connection.Execute("dbo.spPeople_InsertBulk @ID, @FirstName, @LastName, @DateOfBirth", listOfPeople);
             
+        }
+
+        internal List<PersonModel> GetAllFromDb(IDbConnection conn)
+        {
+            return conn.Query<PersonModel>("dbo.spPeople_GetAll").ToList();
         }
     }
 }

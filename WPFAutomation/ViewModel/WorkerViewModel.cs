@@ -15,6 +15,9 @@ namespace WPFAutomation.ViewModel
         private ObservableCollection<PersonModel> _personList = new ObservableCollection<PersonModel>();
         private string _selectedFileNamePath = "-- no Excel file opened --";
         private PersonModel _selectedPerson;
+        private bool _isEnabled_SaveToDatabase;
+        private bool _isEnabled_GetoAllFromDatabase;
+
         private ExcelLoad excelLoad = new ExcelLoad();
         private ExcelSave excelSave = new ExcelSave();
 
@@ -68,6 +71,35 @@ namespace WPFAutomation.ViewModel
         public RelayCommand SaveExcelCommand { get; private set; }
         public RelayCommand ReadExcelCommand { get; private set; }
         public RelayCommand SaveToDbCommand { get; private set; }
+        public RelayCommand GetAllFromDbCommand { get; private set; }
+
+
+
+        public bool IsEnabled_SaveToDatabase
+        {
+            get
+            {
+                return _isEnabled_SaveToDatabase;
+            }
+            set
+            {
+                _isEnabled_SaveToDatabase = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsEnabled_GetAllFromDatabase
+        {
+            get
+            {
+                return _isEnabled_GetoAllFromDatabase;
+            }
+            set
+            {
+                _isEnabled_GetoAllFromDatabase = value;
+                OnPropertyChanged();
+            }
+        }
 
         public WorkerViewModel()
         {
@@ -76,26 +108,62 @@ namespace WPFAutomation.ViewModel
             SaveExcelCommand = new RelayCommand(OnSaveExcel);
             ReadExcelCommand = new RelayCommand(OnReadExcel);
             SaveToDbCommand = new RelayCommand(OnSaveToDB);
+            GetAllFromDbCommand = new RelayCommand(OnGetFromDB);
+
 
 
             //I understand it's just a test, but when we have working solution for this one - test should be only in unit tests - MD
             //PersonList = new ObservableCollection<PersonModel>(new List<PersonModel>() { new PersonModel() { ID = 1234, FirstName = "TestFirstName", LastName = "TestLastName", DateOfBirth = new DateTime(2020, 08, 16) } });
         }
 
+        private void OnGetFromDB()
+        {
+            if (!PersonList.Count.Equals(0))
+            {
+                if (MessageBox.Show("All changes will be lost - do you want to proceed?", "Question",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    PersonList.Clear();
+                    var conn = OpenDatabaseConnection.GetConnection("ConnectionString");
+                    bool testBool = conn == null ? IsEnabled_SaveToDatabase = false : IsEnabled_SaveToDatabase = true;
+                    if (testBool)
+                    {
+                        var dbContext = new PersonModelDataContext();
+                        var pulledDataFromDb = dbContext.GetAllFromDb(conn);
+                        foreach (var person in pulledDataFromDb)
+                        {
+                            PersonList.Add(person);
+                        };
+                    }
+                }
+                else 
+                {
+                    return;
+                }
+            }
+        }
         private void OnSaveToDB()
         {
-            if (MessageBox.Show("Do you want to save changes in Datagrid?", "Question",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning) == MessageBoxResult.No)
+            if (!PersonList.Count.Equals(0))
             {
-                var conn = OpenDatabaseConnection.GetConnection("ConnectionString");
-                var dbContext = new PersonModelDataContext();
-                dbContext.InsertToDb(conn, PersonList.ToList());
-            }
-            else
-            {
-                excelSave.SaveToExcel(PersonList.ToList());
-                return;
+                if (MessageBox.Show("Do you want to save changes in Datagrid?", "Question",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) == MessageBoxResult.No)
+                {
+                    var conn = OpenDatabaseConnection.GetConnection("ConnectionString");
+                    bool testBool = conn == null ? IsEnabled_SaveToDatabase = false : IsEnabled_SaveToDatabase = true;
+                    if (testBool)
+                    {
+                        var dbContext = new PersonModelDataContext();
+                        dbContext.InsertToDb(conn, PersonList.ToList());
+                    }
+                }
+                else
+                {
+                    excelSave.SaveToExcel(PersonList.ToList());
+                    return;
+                }
             }
         }
 

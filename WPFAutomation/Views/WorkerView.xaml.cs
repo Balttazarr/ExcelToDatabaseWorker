@@ -30,7 +30,7 @@ namespace WPFAutomation.Views
 
         private void UpdateDatabaseButton_Click(object sender, RoutedEventArgs e)
         {
-
+           
         }
 
         private void EditableDataGrid_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
@@ -43,6 +43,18 @@ namespace WPFAutomation.Views
             var selectedPerson = sender as FrameworkElement;
 
             ((WorkerViewModel)selectedPerson.DataContext).SelectedPerson = (PersonModel)EditableDataGrid.SelectedItem;
+        }
+
+        private void SaveToDatabaseButton_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            WorkerViewModel theViewModel = (WorkerViewModel)FindResource("WorkerViewModel");
+            theViewModel.IsEnabled_SaveToDatabase = !theViewModel.IsEnabled_SaveToDatabase;
+        }
+
+        private void GetFromDatabaseButton_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            WorkerViewModel theViewModel = (WorkerViewModel)FindResource("WorkerViewModel");
+            theViewModel.IsEnabled_GetAllFromDatabase = !theViewModel.IsEnabled_GetAllFromDatabase;
         }
     }
 }

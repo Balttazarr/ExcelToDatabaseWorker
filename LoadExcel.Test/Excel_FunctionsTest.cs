@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OfficeOpenXml;
+using WPFAutomation;
 using WPFAutomation.ExcelExtensions;
 using WPFAutomation.Models;
 using WPFAutomation.RowModelExtensions;
@@ -11,12 +12,12 @@ using Xunit;
 namespace LoadExcel.Test
 {
     
-    public class LoadNewExcelFileTest
+    public class Excel_FunctionsTest
     {
         private const string correctFilePath = @"./Resources/People.xlsx";
         private const string testName = "Peter";
 
-        public LoadNewExcelFileTest() {}
+        public Excel_FunctionsTest() {}
 
         [Fact]
         public void ExcelLoad_LoadRecordsFromSpreadsheet_AllCellsCorrect()
@@ -58,6 +59,17 @@ namespace LoadExcel.Test
             var foundName = result.Where(w => w.FirstName == testName).FirstOrDefault();
             // Assert
             Assert.Equal(testName, foundName.FirstName);
+        }
+
+        [Fact]
+        public void GetConnection_CheckDbConnection_True()
+        {
+            //arrange
+            var testConnectionString = "ConnectionString";
+            //act
+            var conn = OpenDatabaseConnection.GetConnection(testConnectionString);
+            //assert
+            Assert.NotNull(conn);
         }
 
     }
