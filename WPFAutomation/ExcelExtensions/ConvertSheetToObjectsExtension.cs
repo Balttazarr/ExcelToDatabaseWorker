@@ -52,7 +52,7 @@ namespace WPFAutomation.ExcelExtensions
                     );
             }
 
-            staticData.RowModel = RowData;
+            staticData.RowModel = RowData; // in memory data from .xlsx
 
             return RowData;
         }

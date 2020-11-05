@@ -21,14 +21,12 @@ namespace WPFAutomation
     /// </summary>
     public partial class MainWindow : Window
     {
+        
         public MainWindow()
         {
             InitializeComponent();
+            
         }
 
-        private void WorkerViewControl_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

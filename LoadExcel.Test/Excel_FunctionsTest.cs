@@ -67,7 +67,8 @@ namespace LoadExcel.Test
             //arrange
             var testConnectionString = "ConnectionString";
             //act
-            var conn = OpenDatabaseConnection.GetConnection(testConnectionString);
+
+            var conn = newOpenDb.GetConnection(testConnectionString);
             //assert
             Assert.NotNull(conn);
         }

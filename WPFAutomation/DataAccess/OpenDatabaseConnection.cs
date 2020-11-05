@@ -16,13 +16,14 @@ namespace WPFAutomation
         { 
             try
             {
-                var connection = new SqlConnection(ConnectionStringHelper.ConnectionValue(connString));
+                var connection = new SqlConnection(connString);
                 connection.Open();
                 return connection;
             }
             catch (Exception e)
             {
-                MessageBox.Show("Cannot connect to database :c", e.Message);
+                //TODO: Close connection?
+                MessageBox.Show("Cannot connect to database, check your input", e.Message);
                 return null;
             }
         }

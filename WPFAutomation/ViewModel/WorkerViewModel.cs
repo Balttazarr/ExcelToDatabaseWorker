@@ -6,21 +6,102 @@ using WPFAutomation.ExcelExtensions;
 using WPFAutomation.Models;
 using System.Configuration;
 using System;
+using System.Data.SqlClient;
+using System.Drawing;
 
 namespace WPFAutomation.ViewModel
 {
 
     public class WorkerViewModel : ViewModelBase
     {
+
         private ObservableCollection<PersonModel> _personList = new ObservableCollection<PersonModel>();
         private string _selectedFileNamePath = "-- no Excel file opened --";
         private PersonModel _selectedPerson;
         private bool _isEnabled_SaveToDatabase;
         private bool _isEnabled_GetoAllFromDatabase;
+        private string _dataSourceConnString = "DESKTOP-JVQ0JSM";
+        private string _InitialDirectioryConnString = "PeopleDb";
+        private string _IntegratedSecurityConnString = "True";
+        private CheckConnectionState _gridBackground;
+
+
 
         private ExcelLoad excelLoad = new ExcelLoad();
         private ExcelSave excelSave = new ExcelSave();
 
+
+        public string DataSourceConnString
+        {
+            get
+            {
+                return _dataSourceConnString;
+            }
+            set
+            {
+
+                if (string.IsNullOrEmpty(value) || value.Length <= 0)
+                {
+                    MessageBox.Show("Check your DataSource input!");
+                }
+                if (_dataSourceConnString != value)
+                {
+                    _dataSourceConnString = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        public string InitialDirectioryConnString
+        {
+            get
+            {
+                return _InitialDirectioryConnString;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value) || value.Length <= 0)
+                {
+                    MessageBox.Show("Check your Initial Directory input!");
+                }
+                if (_InitialDirectioryConnString != value)
+                {
+                    _InitialDirectioryConnString = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        public string IntegratedSecurityConnString
+        {
+            get
+            {
+                return _IntegratedSecurityConnString;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value) || value.Length <= 0)
+                {
+                    MessageBox.Show("Check your Integrated Security input!");
+                }
+                if (_IntegratedSecurityConnString != value)
+                {
+                    _IntegratedSecurityConnString = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
+        public enum CheckConnectionState { Success, Failed }
+
+        public CheckConnectionState GridBackground
+        {
+            get { return _gridBackground; }
+            set
+            {
+                _gridBackground = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string SelectedFileNamePath
         {
@@ -64,7 +145,7 @@ namespace WPFAutomation.ViewModel
             }
         }
 
-        
+
         public RelayCommand AddPersonCommand { get; private set; }
         public RelayCommand DeletePersonCommand { get; private set; } // private setter, because it should only be set once inside the ViewModel itself on construction
 
@@ -72,6 +153,8 @@ namespace WPFAutomation.ViewModel
         public RelayCommand ReadExcelCommand { get; private set; }
         public RelayCommand SaveToDbCommand { get; private set; }
         public RelayCommand GetAllFromDbCommand { get; private set; }
+
+        public RelayCommand CheckConnectionStringCommand { get; private set; }
 
 
 
@@ -103,17 +186,44 @@ namespace WPFAutomation.ViewModel
 
         public WorkerViewModel()
         {
+
             AddPersonCommand = new RelayCommand(OnAddingPerson);
             DeletePersonCommand = new RelayCommand(OnDeletePerson, CanDeletePerson);
+
             SaveExcelCommand = new RelayCommand(OnSaveExcel);
             ReadExcelCommand = new RelayCommand(OnReadExcel);
+
             SaveToDbCommand = new RelayCommand(OnSaveToDB);
             GetAllFromDbCommand = new RelayCommand(OnGetFromDB);
+
+            CheckConnectionStringCommand = new RelayCommand(OnCheckingConnetionString);
+
+
+
 
 
 
             //I understand it's just a test, but when we have working solution for this one - test should be only in unit tests - MD
             //PersonList = new ObservableCollection<PersonModel>(new List<PersonModel>() { new PersonModel() { ID = 1234, FirstName = "TestFirstName", LastName = "TestLastName", DateOfBirth = new DateTime(2020, 08, 16) } });
+        }
+
+        private void OnCheckingConnetionString()
+        {
+            GetOpenDataConnection(DataSourceConnString, InitialDirectioryConnString, IntegratedSecurityConnString);
+        }
+
+        private  void GetOpenDataConnection(string server, string database, string security)
+        {
+
+            var builder = new SqlConnectionStringBuilder();
+            builder.DataSource = server;
+            builder.InitialCatalog = database;
+            builder.IntegratedSecurity = bool.Parse(security);
+
+            var successConnect = OpenDatabaseConnection.GetConnection(builder.ToString());
+            if (Equals(successConnect)) 
+            else ConnectionStringButtonColor = Color.Red;
+
         }
 
         private void OnGetFromDB()
@@ -126,8 +236,7 @@ namespace WPFAutomation.ViewModel
                 {
                     PersonList.Clear();
                     var conn = OpenDatabaseConnection.GetConnection("ConnectionString");
-                    bool testBool = conn == null ? IsEnabled_SaveToDatabase = false : IsEnabled_SaveToDatabase = true;
-                    if (testBool)
+                    if (conn == null ? IsEnabled_SaveToDatabase = false : IsEnabled_SaveToDatabase = true)
                     {
                         var dbContext = new PersonModelDataContext();
                         var pulledDataFromDb = dbContext.GetAllFromDb(conn);
@@ -137,7 +246,7 @@ namespace WPFAutomation.ViewModel
                         };
                     }
                 }
-                else 
+                else
                 {
                     return;
                 }
@@ -152,8 +261,7 @@ namespace WPFAutomation.ViewModel
                     MessageBoxImage.Warning) == MessageBoxResult.No)
                 {
                     var conn = OpenDatabaseConnection.GetConnection("ConnectionString");
-                    bool testBool = conn == null ? IsEnabled_SaveToDatabase = false : IsEnabled_SaveToDatabase = true;
-                    if (testBool)
+                    if (conn == null ? IsEnabled_SaveToDatabase = false : IsEnabled_SaveToDatabase = true)
                     {
                         var dbContext = new PersonModelDataContext();
                         dbContext.InsertToDb(conn, PersonList.ToList());
@@ -212,7 +320,7 @@ namespace WPFAutomation.ViewModel
 
         private void OnAddingPerson()
         {
-            PersonList.Add( new PersonModel());
+            PersonList.Add(new PersonModel());
         }
 
         private void OnDeletePerson()
@@ -240,7 +348,7 @@ namespace WPFAutomation.ViewModel
             {
                 SelectedFileNamePath = openFileDialog.FileName;
                 var fromExcelList = excelLoad.LoadExcelFile(SelectedFileNamePath).ToList();
-                
+
                 foreach (var person in fromExcelList)
                 {
                     PersonList.Add(person);

@@ -76,6 +76,7 @@
     <Compile Include="EnumExtensions\EnumHelper.cs" />
     <Compile Include="ExcelExtensions\ConvertSheetToObjectsExtension.cs" />
     <Compile Include="ExcelExtensions\ExcelLoad.cs" />
+    <Compile Include="Converters\ConnectionStringButtonState.cs" />
     <Compile Include="Models\ColumnModel.cs" />
     <Compile Include="Models\Enums\IntegratedColumns.cs" />
     <Compile Include="Models\Enums\Sex.cs" />
@@ -141,6 +142,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="StoredProcedures\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="TextFile1.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
