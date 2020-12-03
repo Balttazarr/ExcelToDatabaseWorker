@@ -10,9 +10,10 @@ namespace WPFAutomation.Models
     public class Belonging
     {
         public int Id { get; set; }
-        public string NameOf { get; set; }
-        public BelogningType Type { get; set; }
-        [Required]
-        public PersonModel Person { get; set; }
+        public int PeopleId { get; set; }
+        public string Name { get; set; }
+        public string Type { get; set; }
+
+        internal bool IsNew => (this.Id == default(int));
     }
 }

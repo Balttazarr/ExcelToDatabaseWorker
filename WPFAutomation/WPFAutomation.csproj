@@ -70,6 +70,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CommandsHelper\RelayCommand.cs" />
+    <Compile Include="Converters\ColorBrushConverter.cs" />
     <Compile Include="DataAccess\ConnectionStringHelper.cs" />
     <Compile Include="DataAccess\OpenDatabaseConnection.cs" />
     <Compile Include="DataAccess\PersonModelDataContext.cs" />
@@ -142,9 +143,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="StoredProcedures\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="TextFile1.txt" />
   </ItemGroup>

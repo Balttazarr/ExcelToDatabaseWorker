@@ -7,7 +7,8 @@ using WPFAutomation.Models;
 using System.Configuration;
 using System;
 using System.Data.SqlClient;
-using System.Drawing;
+using System.Windows.Data;
+using System.Windows.Media;
 
 namespace WPFAutomation.ViewModel
 {
@@ -24,6 +25,7 @@ namespace WPFAutomation.ViewModel
         private string _InitialDirectioryConnString = "PeopleDb";
         private string _IntegratedSecurityConnString = "True";
         private CheckConnectionState _gridBackground;
+        private SolidColorBrush _connectionStringButtonColor;
 
 
 
@@ -184,6 +186,16 @@ namespace WPFAutomation.ViewModel
             }
         }
 
+        public SolidColorBrush ConnectionStringButtonColor
+        {
+            get { return _connectionStringButtonColor; }
+            set
+            {
+                _connectionStringButtonColor = value;
+                OnPropertyChanged();
+            }
+        }
+
         public WorkerViewModel()
         {
 
@@ -211,8 +223,8 @@ namespace WPFAutomation.ViewModel
         {
             GetOpenDataConnection(DataSourceConnString, InitialDirectioryConnString, IntegratedSecurityConnString);
         }
-
-        private  void GetOpenDataConnection(string server, string database, string security)
+        //this method should to DataAccess project like the GetConnection method too
+        private void GetOpenDataConnection(string server, string database, string security)
         {
 
             var builder = new SqlConnectionStringBuilder();
@@ -220,9 +232,26 @@ namespace WPFAutomation.ViewModel
             builder.InitialCatalog = database;
             builder.IntegratedSecurity = bool.Parse(security);
 
-            var successConnect = OpenDatabaseConnection.GetConnection(builder.ToString());
-            if (Equals(successConnect)) 
-            else ConnectionStringButtonColor = Color.Red;
+            try
+            {
+                var successConnect = OpenDatabaseConnection.GetConnection(builder.ToString());
+                if (successConnect.State == System.Data.ConnectionState.Open)
+                {
+                    ConnectionStringButtonColor = new SolidColorBrush(Color.FromArgb(125, 0, 200, 125));
+                }
+                else
+                {
+                    ConnectionStringButtonColor = new SolidColorBrush(Color.FromArgb(125, 0, 125, 125));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                var newEx = ex.Message;
+                MessageBox.Show("Wrong connection String" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                //throw;
+            }
+
 
         }
 

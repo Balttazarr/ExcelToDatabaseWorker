@@ -8,9 +8,18 @@ using WPFAutomation.ViewModel;
 
 namespace WPFAutomation.Models
 {
-    [Table("People")]
+
     public class PersonModel : ViewModelBase
     {
+
+        //imho all declared variables should be on the top of the class - MD
+        private Random _gen = new Random();
+
+        private int _ID;
+        private string _firstName;
+        private string _lastName;
+        private DateTime _dateOfBirth;
+
         [Required]
         public int ID
         {
@@ -64,14 +73,15 @@ namespace WPFAutomation.Models
                 }
             }
         }
-        //public int Height { get; set; } // in centimeters [cm]
-        //public float Weight { get; set; } //  in kilograms [kg]
+        public int Height { get; set; } // in centimeters [cm]
+        public float Weight { get; set; } //  in kilograms [kg]
+
         //public Sex Sex { get; set; }
         //public Race Race { get; set; }
         //public Nationality Nationality { get; set; }
         //public Profession Profession { get; set; }
-        // public List<Belonging> ThingsOwned { get; set; }
-        // public List<Language> LanguagesSpoken { get; set; }
+        public List<Belonging> ThingsOwned { get; set; }
+        public List<Language> LanguagesSpoken { get; set; }
 
         //////////////////////////////////////////////////////////////////////////////////////
         static int uniqueID = 1;
@@ -102,13 +112,7 @@ namespace WPFAutomation.Models
             return start.AddDays(_gen.Next(range));
         }
 
-        //imho all declared variables should be on the top of the class - MD
-        private Random _gen = new Random();
 
-        private int _ID;
-        private string _firstName;
-        private string _lastName;
-        private DateTime _dateOfBirth;
 
     }
 }
