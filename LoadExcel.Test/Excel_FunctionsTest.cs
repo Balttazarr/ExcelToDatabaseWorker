@@ -61,17 +61,5 @@ namespace LoadExcel.Test
             Assert.Equal(testName, foundName.FirstName);
         }
 
-        [Fact]
-        public void GetConnection_CheckDbConnection_True()
-        {
-            //arrange
-            var testConnectionString = "ConnectionString";
-            //act
-
-            var conn = newOpenDb.GetConnection(testConnectionString);
-            //assert
-            Assert.NotNull(conn);
-        }
-
     }
 }

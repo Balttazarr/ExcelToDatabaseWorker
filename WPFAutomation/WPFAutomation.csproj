@@ -71,9 +71,10 @@
     </ApplicationDefinition>
     <Compile Include="CommandsHelper\RelayCommand.cs" />
     <Compile Include="Converters\ColorBrushConverter.cs" />
-    <Compile Include="DataAccess\ConnectionStringHelper.cs" />
-    <Compile Include="DataAccess\OpenDatabaseConnection.cs" />
-    <Compile Include="DataAccess\PersonModelDataContext.cs" />
+    <Compile Include="DataRepository\ConnectionStringHelper.cs" />
+    <Compile Include="DataRepository\IPeopleRepository.cs" />
+    <Compile Include="DataRepository\OpenDatabaseConnection.cs" />
+    <Compile Include="DataRepository\PeopleRepository.cs" />
     <Compile Include="EnumExtensions\EnumHelper.cs" />
     <Compile Include="ExcelExtensions\ConvertSheetToObjectsExtension.cs" />
     <Compile Include="ExcelExtensions\ExcelLoad.cs" />

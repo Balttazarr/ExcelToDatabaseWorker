@@ -19,8 +19,12 @@ namespace WPFAutomation.Models
         private string _firstName;
         private string _lastName;
         private DateTime _dateOfBirth;
+        private int _height;
+        private int _weight;
 
-        [Required]
+        private List<Belonging> _thingsOwned;
+        private List<Language> _languages;
+
         public int ID
         {
             get { return _ID; }
@@ -33,8 +37,7 @@ namespace WPFAutomation.Models
                 }
             }
         }
-        [Required]
-        [StringLength(30)]
+
         public string FirstName
         {
             get { return _firstName; }
@@ -47,7 +50,7 @@ namespace WPFAutomation.Models
                 }
             }
         }
-        [StringLength(30)]
+
         public string LastName
         {
             get { return _lastName; }
@@ -60,7 +63,7 @@ namespace WPFAutomation.Models
                 }
             }
         }
-        [DataType(DataType.Date)]
+
         public DateTime DateOfBirth
         {
             get { return _dateOfBirth; }
@@ -91,8 +94,8 @@ namespace WPFAutomation.Models
             FirstName = "Test";
             LastName = "Name";
             DateOfBirth = GetRandomBirthDate();
-        //    Height = 170;
-        //    Weight = 70;
+            Height = 170;
+            Weight = 70;
         //    Sex = Sex.Male;
         //    Race = Race.White;
         //    Nationality = Nationality.American;

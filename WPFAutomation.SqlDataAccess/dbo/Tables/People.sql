@@ -1,14 +1,11 @@
-﻿CREATE TABLE [dbo].[Person]
+﻿CREATE TABLE [dbo].[People]
 (
 	[Id] INT NOT NULL IDENTITY, 
-    [FirstName] VARCHAR(50) NULL, 
+    [Firstname] VARCHAR(50) NULL, 
     [LastName] VARCHAR(50) NULL, 
+    [DateOfBirth] DATE NULL, 
     [Height] INT NULL, 
-    [Weight] INT NULL, 
-    [Sex] NVARCHAR(MAX) NULL, 
-    [Race] NVARCHAR(MAX) NULL, 
-    [Nationality] NVARCHAR(MAX) NULL, 
-    [Profession] NVARCHAR(MAX) NULL, 
+    [Weight] INT NULL
 
     CONSTRAINT [PK_People] PRIMARY KEY CLUSTERED ([Id] ASC)
 )

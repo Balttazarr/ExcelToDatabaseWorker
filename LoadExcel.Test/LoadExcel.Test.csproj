@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Excel_FunctionsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository_CRUD_TESTS.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

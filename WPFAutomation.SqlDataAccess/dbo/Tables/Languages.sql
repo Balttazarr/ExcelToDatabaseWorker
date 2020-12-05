@@ -1,11 +1,10 @@
-﻿CREATE TABLE [dbo].[Language]
+﻿CREATE TABLE [dbo].[Languages]
 (
-	[Id] INT NOT NULL, 
+	[Id] INT IDENTITY NOT NULL, 
     [PeopleId] INT NOT NULL, 
     [NameId] INT NOT NULL, 
     [Skill] VARCHAR(50) NOT NULL,
 
     CONSTRAINT [PK_Languages] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Languages_People] FOREIGN KEY ([PeopleId]) REFERENCES [dbo].[Person] ([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_Languages_LanguageNames] FOREIGN KEY ([NameId]) REFERENCES [dbo].[LanguageNames] ([Id])
+    CONSTRAINT [FK_Languages_People] FOREIGN KEY ([PeopleId]) REFERENCES [dbo].[People] ([Id]) ON DELETE CASCADE
 )

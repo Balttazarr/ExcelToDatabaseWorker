@@ -6,6 +6,6 @@
     [Quantity] INT NULL
 
     CONSTRAINT [PK_Belongigns] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Belongigns_People] FOREIGN KEY ([PeopleId]) REFERENCES [dbo].[Person] ([Id]) ON DELETE CASCADE
+    CONSTRAINT [FK_Belongigns_People] FOREIGN KEY ([PeopleId]) REFERENCES [dbo].[People] ([Id]) ON DELETE CASCADE
  
 )

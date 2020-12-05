@@ -9,6 +9,7 @@ using System;
 using System.Data.SqlClient;
 using System.Windows.Data;
 using System.Windows.Media;
+using WPFAutomation.DataRepository;
 
 namespace WPFAutomation.ViewModel
 {
@@ -267,12 +268,13 @@ namespace WPFAutomation.ViewModel
                     var conn = OpenDatabaseConnection.GetConnection("ConnectionString");
                     if (conn == null ? IsEnabled_SaveToDatabase = false : IsEnabled_SaveToDatabase = true)
                     {
-                        var dbContext = new PersonModelDataContext();
-                        var pulledDataFromDb = dbContext.GetAllFromDb(conn);
-                        foreach (var person in pulledDataFromDb)
-                        {
-                            PersonList.Add(person);
-                        };
+                        //TODO!!!
+                        //var dbContext = new PeopleRepository(conn)
+                        //var pulledDataFromDb = dbContext.GetAllFromDb(conn);
+                        //foreach (var person in pulledDataFromDb)
+                        //{
+                        //    PersonList.Add(person);
+                        //};
                     }
                 }
                 else
@@ -292,8 +294,9 @@ namespace WPFAutomation.ViewModel
                     var conn = OpenDatabaseConnection.GetConnection("ConnectionString");
                     if (conn == null ? IsEnabled_SaveToDatabase = false : IsEnabled_SaveToDatabase = true)
                     {
-                        var dbContext = new PersonModelDataContext();
-                        dbContext.InsertToDb(conn, PersonList.ToList());
+                        //TODO
+                        //var dbContext = new PersonModelDataContext();
+                        //dbContext.InsertToDb(conn, PersonList.ToList());
                     }
                 }
                 else
