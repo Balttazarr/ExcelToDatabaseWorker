@@ -60,9 +60,9 @@
                     <DataGridTextColumn Header="First name" Binding="{Binding FirstName}" />
                     <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" />
                     <DataGridTextColumn Header="Date of birth" Binding="{Binding DateOfBirth , StringFormat=dd-MM-yyyy}" />
-                    <!--<DataGridTextColumn Header="Height" Binding="{Binding Height}"/>
+                    <DataGridTextColumn Header="Height" Binding="{Binding Height}"/>
                     <DataGridTextColumn Header="Weight" Binding="{Binding Weight}"/>
-                    <DataGridTextColumn Header="Sex" Binding="{Binding Sex}"/>
+                    <!--<DataGridTextColumn Header="Sex" Binding="{Binding Sex}"/>
                     <DataGridTextColumn Header="Race" Binding="{Binding Race}"/>
                     <DataGridTextColumn Header="Nationality" Binding="{Binding Nationality}"/>
                     <DataGridTextColumn Header="Profession" Binding="{Binding Profession}"/>-->

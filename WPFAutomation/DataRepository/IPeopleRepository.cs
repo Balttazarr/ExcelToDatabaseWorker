@@ -9,9 +9,7 @@ namespace WPFAutomation.DataRepository
 {
     interface IPeopleRepository
     {
-        
         List<PersonModel> GetAll();
         PersonModel Find(int id);
-
     }
 }

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using WPFAutomation.Models;
 
 namespace WPFAutomation.DataRepository
@@ -15,7 +17,6 @@ namespace WPFAutomation.DataRepository
             db = new SqlConnection(connString);
         }
 
-
         public PersonModel Find(int id)
         {
             throw new NotImplementedException();
@@ -23,7 +24,8 @@ namespace WPFAutomation.DataRepository
 
         public List<PersonModel> GetAll()
         {
-            throw new NotImplementedException();
+            var selectStar = db.Query<PersonModel>("SELECT * FROM People").ToList();
+            return selectStar;
         }
     }
 }

@@ -22,9 +22,9 @@ namespace WPFAutomation.ViewModel
         private PersonModel _selectedPerson;
         private bool _isEnabled_SaveToDatabase;
         private bool _isEnabled_GetoAllFromDatabase;
-        private string _dataSourceConnString = "DESKTOP-JVQ0JSM";
-        private string _InitialDirectioryConnString = "PeopleDb";
-        private string _IntegratedSecurityConnString = "True";
+        private string _dataSourceConnString;
+        private string _InitialDirectioryConnString;
+        private string _IntegratedSecurityConnString;
         private CheckConnectionState _gridBackground;
         private SolidColorBrush _connectionStringButtonColor;
 
@@ -207,17 +207,29 @@ namespace WPFAutomation.ViewModel
             ReadExcelCommand = new RelayCommand(OnReadExcel);
 
             SaveToDbCommand = new RelayCommand(OnSaveToDB);
-            GetAllFromDbCommand = new RelayCommand(OnGetFromDB);
+            GetAllFromDbCommand = new RelayCommand(OnGetAllFromDB);
 
             CheckConnectionStringCommand = new RelayCommand(OnCheckingConnetionString);
 
-
+            InitializeDefaultConnString();
 
 
 
 
             //I understand it's just a test, but when we have working solution for this one - test should be only in unit tests - MD
             //PersonList = new ObservableCollection<PersonModel>(new List<PersonModel>() { new PersonModel() { ID = 1234, FirstName = "TestFirstName", LastName = "TestLastName", DateOfBirth = new DateTime(2020, 08, 16) } });
+        }
+
+        private void InitializeDefaultConnString()
+        {
+            var connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            var connStringInOrder = connectionString.Split(';');
+
+            DataSourceConnString = connStringInOrder[0].Remove(0, 12);
+            InitialDirectioryConnString = connStringInOrder[1].Remove(0, 16);
+            bool integratedSecurity = connStringInOrder[2] == "Integrated Security=True" ? true : false;
+            IntegratedSecurityConnString = integratedSecurity.ToString();
+
         }
 
         private void OnCheckingConnetionString()
@@ -227,28 +239,22 @@ namespace WPFAutomation.ViewModel
         //this method should to DataAccess project like the GetConnection method too
         private void GetOpenDataConnection(string server, string database, string security)
         {
-
-            var builder = new SqlConnectionStringBuilder();
-            builder.DataSource = server;
-            builder.InitialCatalog = database;
-            builder.IntegratedSecurity = bool.Parse(security);
+            string builder = BuildConnectionString(server, database, security);
 
             try
             {
-                var successConnect = OpenDatabaseConnection.GetConnection(builder.ToString());
-                if (successConnect.State == System.Data.ConnectionState.Open)
+                var successConnect = OpenDatabaseConnection.GetConnection(builder);
+                if (successConnect != null && successConnect.State == System.Data.ConnectionState.Open)
                 {
-                    ConnectionStringButtonColor = new SolidColorBrush(Color.FromArgb(125, 0, 200, 125));
+                    ConnectionStringButtonColor = new SolidColorBrush(Color.FromRgb(0, 255, 0));
                 }
                 else
                 {
-                    ConnectionStringButtonColor = new SolidColorBrush(Color.FromArgb(125, 0, 125, 125));
+                    ConnectionStringButtonColor = new SolidColorBrush(Color.FromRgb(250, 0, 0));
                 }
             }
             catch (Exception ex)
             {
-
-                var newEx = ex.Message;
                 MessageBox.Show("Wrong connection String" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 //throw;
             }
@@ -256,7 +262,16 @@ namespace WPFAutomation.ViewModel
 
         }
 
-        private void OnGetFromDB()
+        private string BuildConnectionString(string server, string database, string security)
+        {
+            var builder = new SqlConnectionStringBuilder();
+            builder.DataSource = server;
+            builder.InitialCatalog = database;
+            builder.IntegratedSecurity = bool.Parse(security);
+            return builder.ToString();
+        }
+
+        private void OnGetAllFromDB()
         {
             if (!PersonList.Count.Equals(0))
             {
@@ -265,22 +280,26 @@ namespace WPFAutomation.ViewModel
                     MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     PersonList.Clear();
-                    var conn = OpenDatabaseConnection.GetConnection("ConnectionString");
-                    if (conn == null ? IsEnabled_SaveToDatabase = false : IsEnabled_SaveToDatabase = true)
-                    {
-                        //TODO!!!
-                        //var dbContext = new PeopleRepository(conn)
-                        //var pulledDataFromDb = dbContext.GetAllFromDb(conn);
-                        //foreach (var person in pulledDataFromDb)
-                        //{
-                        //    PersonList.Add(person);
-                        //};
-                    }
                 }
                 else
                 {
                     return;
                 }
+            }
+
+            //if (conn == null ? IsEnabled_SaveToDatabase = false : IsEnabled_SaveToDatabase = true)
+
+            var repo = new PeopleRepository(BuildConnectionString(DataSourceConnString, InitialDirectioryConnString, IntegratedSecurityConnString));
+            if (repo != null ? IsEnabled_SaveToDatabase = true : IsEnabled_SaveToDatabase = true)
+            {
+                var peopleFromDB = repo.GetAll();
+                //TODO!!!
+                //var dbContext = new PeopleRepository(conn)
+                //var pulledDataFromDb = dbContext.GetAllFromDb(conn);
+                foreach (var person in peopleFromDB)
+                {
+                    PersonList.Add(person);
+                };
             }
         }
         private void OnSaveToDB()

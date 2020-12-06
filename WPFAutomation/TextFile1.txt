@@ -1,7 +1,7 @@
 ﻿//TODO TODO TODO
 
 - allow users input to determine SQL Server connection,
-- change button color dependig on if connected to Database or not,
+- 
 - checking if a given database exists,
 - validation in excel/DB
 - EnumHelper???

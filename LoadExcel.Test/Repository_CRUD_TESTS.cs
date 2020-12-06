@@ -14,7 +14,7 @@ namespace LoadExcel.Test
         public void GetAll_Should_return_people_from_database()
         {
             //arrange
-            var repository = new PeopleRepository(ConfigurationManager.ConnectionStrings[name].ConnectionString);
+            var repository = new PeopleRepository("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=PeopleDB;Integrated Security=True");
             //act
             var people = repository.GetAll();
             //assert
