@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.Windows.Data;
 using System.Windows.Media;
 using WPFAutomation.DataRepository;
+using System.Threading.Tasks;
 
 namespace WPFAutomation.ViewModel
 {
@@ -20,8 +21,8 @@ namespace WPFAutomation.ViewModel
         private ObservableCollection<PersonModel> _personList = new ObservableCollection<PersonModel>();
         private string _selectedFileNamePath = "-- no Excel file opened --";
         private PersonModel _selectedPerson;
-        private bool _isEnabled_SaveToDatabase;
-        private bool _isEnabled_GetoAllFromDatabase;
+        private bool _isEnabled_SaveToDatabase = false;
+        private bool _isEnabled_GetoAllFromDatabase = false;
         private string _dataSourceConnString;
         private string _InitialDirectioryConnString;
         private string _IntegratedSecurityConnString;
@@ -142,6 +143,7 @@ namespace WPFAutomation.ViewModel
                 {
                     _selectedPerson = value;
                     DeletePersonCommand.RaiseCanExecuteChanged();
+                    UpdatePersonCommand.RaiseCanExecuteChanged();
                     OnPropertyChanged();
                 }
 
@@ -151,6 +153,8 @@ namespace WPFAutomation.ViewModel
 
         public RelayCommand AddPersonCommand { get; private set; }
         public RelayCommand DeletePersonCommand { get; private set; } // private setter, because it should only be set once inside the ViewModel itself on construction
+
+        public RelayCommand UpdatePersonCommand { get; private set; }
 
         public RelayCommand SaveExcelCommand { get; private set; }
         public RelayCommand ReadExcelCommand { get; private set; }
@@ -202,6 +206,7 @@ namespace WPFAutomation.ViewModel
 
             AddPersonCommand = new RelayCommand(OnAddingPerson);
             DeletePersonCommand = new RelayCommand(OnDeletePerson, CanDeletePerson);
+            UpdatePersonCommand = new RelayCommand(OnUpdatePerson, CanUpdatePerson);
 
             SaveExcelCommand = new RelayCommand(OnSaveExcel);
             ReadExcelCommand = new RelayCommand(OnReadExcel);
@@ -214,13 +219,27 @@ namespace WPFAutomation.ViewModel
             InitializeDefaultConnString();
 
 
-
-
             //I understand it's just a test, but when we have working solution for this one - test should be only in unit tests - MD
             //PersonList = new ObservableCollection<PersonModel>(new List<PersonModel>() { new PersonModel() { ID = 1234, FirstName = "TestFirstName", LastName = "TestLastName", DateOfBirth = new DateTime(2020, 08, 16) } });
         }
 
-        private void InitializeDefaultConnString()
+        private bool CanUpdatePerson()
+        {
+            if (SelectedPerson != null)
+            {
+                var repository = new PeopleRepository(BuildConnectionString(DataSourceConnString, InitialDirectioryConnString, IntegratedSecurityConnString));
+                return repository.Find(SelectedPerson.ID) != null;
+            }
+            return false;
+        }
+
+        private void OnUpdatePerson()
+        {
+            var repository = new PeopleRepository(BuildConnectionString(DataSourceConnString, InitialDirectioryConnString, IntegratedSecurityConnString));
+            repository.Update(SelectedPerson);
+        }
+
+        internal void InitializeDefaultConnString()
         {
             var connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             var connStringInOrder = connectionString.Split(';');
@@ -243,20 +262,19 @@ namespace WPFAutomation.ViewModel
 
             try
             {
-                var successConnect = OpenDatabaseConnection.GetConnection(builder);
-                if (successConnect != null && successConnect.State == System.Data.ConnectionState.Open)
-                {
-                    ConnectionStringButtonColor = new SolidColorBrush(Color.FromRgb(0, 255, 0));
-                }
-                else
-                {
-                    ConnectionStringButtonColor = new SolidColorBrush(Color.FromRgb(250, 0, 0));
-                }
+                OpenDatabaseConnection.GetConnection(builder);
+                //if (successConnect != null && successConnect.State == System.Data.ConnectionState.Open)
+
+                ConnectionStringButtonColor = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+                IsEnabled_GetAllFromDatabase = true;
+                IsEnabled_SaveToDatabase = true;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Wrong connection String" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                //throw;
+                ConnectionStringButtonColor = new SolidColorBrush(Color.FromRgb(250, 0, 0));
+                IsEnabled_GetAllFromDatabase = false;
+                IsEnabled_SaveToDatabase = false;
             }
 
 
@@ -290,12 +308,10 @@ namespace WPFAutomation.ViewModel
             //if (conn == null ? IsEnabled_SaveToDatabase = false : IsEnabled_SaveToDatabase = true)
 
             var repo = new PeopleRepository(BuildConnectionString(DataSourceConnString, InitialDirectioryConnString, IntegratedSecurityConnString));
-            if (repo != null ? IsEnabled_SaveToDatabase = true : IsEnabled_SaveToDatabase = true)
+            if (repo == null ? IsEnabled_SaveToDatabase = false : IsEnabled_SaveToDatabase = true)
             {
                 var peopleFromDB = repo.GetAll();
-                //TODO!!!
-                //var dbContext = new PeopleRepository(conn)
-                //var pulledDataFromDb = dbContext.GetAllFromDb(conn);
+
                 foreach (var person in peopleFromDB)
                 {
                     PersonList.Add(person);

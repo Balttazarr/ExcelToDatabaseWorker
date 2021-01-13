@@ -11,16 +11,11 @@ namespace WPFAutomation.Views
     /// </summary>
     public partial class WorkerView
     {
-        public WorkerViewModel workerViewInstance = new WorkerViewModel();
-
-        //public WorkerViewModel viewModelModel = new WorkerViewModel();
+       
+        //public WorkerViewModel viewModelInstance = new WorkerViewModel();
         public WorkerView()
         {
-
-            //OpenDatabaseConnection.GetConnection("ConnectionString");
             InitializeComponent();
-            // var dataAccess = new PersonModelDataContext();
-            // dataAccess.InsertToDb("456", "ABC", "XYZ", Convert.ToDateTime("05-06-2010"));
 
         }
 
