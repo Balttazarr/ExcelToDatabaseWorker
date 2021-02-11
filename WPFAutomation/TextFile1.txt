@@ -1,7 +1,5 @@
 ﻿//TODO TODO TODO
-- join tables to people
-- scaling components of the View
--
+
 - allow users input to determine SQL Server connection,
 - 
 - checking if a given database exists,

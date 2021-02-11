@@ -17,28 +17,15 @@ namespace WPFAutomation.DataRepository
             db = new SqlConnection(connString);
         }
 
-        public List<PersonModel> GetAll()
-        {
-            var selectStarCommand = db.Query<PersonModel>("SELECT * FROM People").ToList();
-            return selectStarCommand;
-        }
-
-        public PersonModel Update(PersonModel personModel)
-        {
-            var sql = "UPDATE People " +
-                "SET FirstName   = @FirstName, " +
-                "    LastName    = @LastName, " +
-                "    DateOfBirth = @DateOfBirth, " +
-                "    Height   = @Height, " +
-                "    Weight     = @Weight " +
-                "WHERE Id = @Id";
-            db.Execute(sql, personModel);
-            return personModel;
-        }
-
         public PersonModel Find(int id)
         {
-            return db.Query<PersonModel>("SELECT * FROM People WHERE Id = @Id", new { id }).SingleOrDefault();
+            throw new NotImplementedException();
+        }
+
+        public List<PersonModel> GetAll()
+        {
+            var selectStar = db.Query<PersonModel>("SELECT * FROM People").ToList();
+            return selectStar;
         }
     }
 }

@@ -11,6 +11,5 @@ namespace WPFAutomation.DataRepository
     {
         List<PersonModel> GetAll();
         PersonModel Find(int id);
-        PersonModel Update(PersonModel personModel);
     }
 }
