@@ -11,5 +11,9 @@ namespace WPFAutomation.DataRepository
     {
         List<PersonModel> GetAll();
         PersonModel Find(int id);
+        PersonModel Update(PersonModel personModel);
+        void Remove(int id);
+        List<Belonging> GetFullPersonModel(int id);
+
     }
 }

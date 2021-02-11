@@ -6,54 +6,79 @@
         xmlns:ext="clr-namespace:WPFAutomation.Converters"
         xmlns:local="clr-namespace:WPFAutomation.ViewModel"
         Loaded="OnWindowLoaded" Background="White"
-        mc:Ignorable="d" Height="740">
-    
+        mc:Ignorable="d" MinHeight="750" Width="Auto" >
+
     <!--<UserControl.Resources>
         <ext:ConnectionStringButtonState x:Key="connectionStringButtonBackground" />
     </UserControl.Resources>-->
-    
+
     <UserControl.InputBindings>
         <KeyBinding Key="Delete" Command="{Binding DeletePersonCommand}"/>
     </UserControl.InputBindings>
+
     <UserControl.DataContext>
         <local:WorkerViewModel />
     </UserControl.DataContext>
+
     <Grid Margin="5,10,5,0" VerticalAlignment="Top" HorizontalAlignment="Center" Height="714">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid Name="ParentGridDataTable">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="11"/>
+                <ColumnDefinition Width="13"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <GroupBox Grid.Row="0" >
-                <ToolBarTray >
-                    <ToolBar>
-                        <Button Command="{Binding AddPersonCommand}">
+            <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Margin="0,0,-170,0" >
+                <ToolBarTray>
+                    <ToolBar Margin="1 1 1 0">
+                        <Button Command="{Binding AddPersonCommand}" BorderThickness="1" BorderBrush="Aquamarine" ToolTip="Add a person to the list">
                             <StackPanel>
+                                <!--<Image Source="WPFAutomation/ToolBarIcons/add.png" SnapsToDevicePixels="True"/>-->
                                 <TextBlock Text="Add Person"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding DeletePersonCommand}">
+                        <Button Command="{Binding DeletePersonCommand}" BorderThickness="1" BorderBrush="Aquamarine" ToolTip="Delete a person from the list">
                             <StackPanel>
                                 <TextBlock Text="Delete Person"/>
                             </StackPanel>
                         </Button>
+                        <TextBlock Text="..."/>
+                        <Button Command="{Binding UpdatePersonCommand}" BorderThickness="1" BorderBrush="Aquamarine" ToolTip="Update a chosen person in database" IsEnabled="{Binding IsEnabled_UpdatePersonInDatabase}">
+                            <StackPanel>
+                                <TextBlock Text="Update Person"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Command="{Binding RemovePersonCommand}" BorderThickness="1" BorderBrush="DarkRed" ToolTip="Remove a given person in a database" IsEnabled="{Binding IsEnabled_RemovePersonInDatabase}">
+                            <StackPanel>
+                                <TextBlock Text="Remove Person"/>
+                            </StackPanel>
+                        </Button>
                     </ToolBar>
                 </ToolBarTray>
-            </GroupBox>
-            <DataGrid Grid.Row="1" Name="EditableDataGrid" HorizontalAlignment="Left" 
-                      Width="710"
+            </DockPanel>
+            <StackPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="5,5,0,0">
+                <Label  Content="Person List" FontSize="13" BorderBrush="Bisque" BorderThickness="2" />
+            </StackPanel>
+            <DataGrid Grid.Row="1" Grid.Column="0"  Name="EditableDataGrid" 
+                      HorizontalAlignment="Left" 
+                      Width="Auto" Height="345"
                       ItemsSource="{Binding PersonList}"
                       SelectedItem="{Binding SelectedPerson,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                       EnableRowVirtualization="True"
                       AutoGenerateColumns="False"
                       CanUserAddRows="false"
-                      CanUserSortColumns="False" Height="345" VerticalAlignment="Bottom" Grid.RowSpan="3" SelectionChanged="EditableDataGrid_SelectionChanged" Margin="0,0,0,10">
+                      CanUserSortColumns="False"  VerticalAlignment="Bottom" SelectionChanged="EditableDataGrid_SelectionChanged" Margin="5,0,0,10">
                 <DataGrid.Columns>
 
                     <DataGridTextColumn Header="ID" Binding="{Binding ID}"  />
@@ -68,10 +93,35 @@
                     <DataGridTextColumn Header="Profession" Binding="{Binding Profession}"/>-->
                 </DataGrid.Columns>
             </DataGrid>
-            <!--<DataGrid ItemsSource="{Binding PersonList}" AutoGenerateColumns="True">
-                
-            </DataGrid>-->
+            <GridSplitter Grid.Row="1" Grid.Column="1" Width="30" Grid.ColumnSpan="2" Margin="5,0,5,0"   ></GridSplitter>
+            <!-- Right side-->
+            <Grid Grid.Row="1" Grid.Column="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" HorizontalAlignment="Left" Margin="5">
+                    <Label Content="Languages" FontSize="13" BorderBrush="Bisque" BorderThickness="2" Margin="5,0,0,0"/>
+                </StackPanel>
+                <DataGrid Grid.Row="1"  Name="PropertiesOfSelectedPerson" 
+                      HorizontalAlignment="Left"
+                      Width="171" Height="345"
+                      ItemsSource="{Binding PersonThingsOwned}"
+                      EnableRowVirtualization="True"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="false"
+                      CanUserSortColumns="False"  VerticalAlignment="Bottom" Grid.RowSpan="3" Margin="10,0,0,10"
+                      >
+                    <!--<DataGridTextColumn Header="ID" Binding="{Binding ID}"  />-->
+                    <!--<DataGridTextColumn Header="" Binding="{Binding PeopleId}" />-->
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
         </Grid>
+        <!--Lower side-->
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -92,27 +142,33 @@
                 <Label Content="Initial Directory: " HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0"/>
                 <Label Content="Integrated Security: " HorizontalAlignment="Right" Grid.Row="2" Grid.Column="0"/>
 
-                <TextBox Grid.Row="0" Grid.Column="1" Name="DataSourceText" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Left" Text="{Binding DataSourceConnString, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBox Grid.Row="0" Grid.Column="1" Name="DataSourceText" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Left" Text="{Binding DataSourceConnString, UpdateSourceTrigger=Default}"  />
                 <TextBox Grid.Row="1" Grid.Column="1" Name="InitialDirectoryText" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Left" Text="{Binding InitialDirectioryConnString, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="2" Grid.Column="1" Name="IntegratedSecuirity" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Left" Text="{Binding IntegratedSecurityConnString, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Connect to Database"  x:Name="CheckConnStringButton" FontSize="20" Background="{Binding ConnectionStringButtonColor}"  Grid.Column="1" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="200" Height="43" Command="{Binding CheckConnectionStringCommand}"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="1" Grid.Column="0" Content="Check Database connection:" FontSize="20" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Right"  VerticalAlignment="Center"   RenderTransformOrigin="0.517,0.267"/>
+                <Button Grid.Row="1" Grid.Column="1" Content="Connect to Database"  x:Name="CheckConnStringButton" FontSize="20" Background="{Binding ConnectionStringButtonColor}"  HorizontalAlignment="Left"  VerticalAlignment="Top"  Height="45" Command="{Binding CheckConnectionStringCommand}"/>
 
 
-                <Label Content="Check Database connection:" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Right" Margin="0,20,10,20" VerticalAlignment="Center" Height="43" Width="178" RenderTransformOrigin="0.517,0.267"/>
             </Grid>
             <Grid Grid.Row="2">
                 <Button x:Name="ReadExcelButton" Grid.Row="0" Content="Load Excel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="425,10,0,0"  Command="{Binding ReadExcelCommand}"></Button>
                 <TextBox Grid.Row="0" Text="{Binding SelectedFileNamePath}"  HorizontalAlignment="Left" Height="23" Margin="70,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="327"  />
                 <Label  Grid.Row="0" Content="File name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,0,0"/>
                 <Button x:Name="SaveExcelButton" Grid.Row="0" Content="Save to Excel " HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="570,10,0,0"  Command="{Binding SaveExcelCommand}"/>
-                <Button Content="Get from Database" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="425,48,0,0" Command="{Binding GetAllFromDbCommand}" IsEnabledChanged="GetFromDatabaseButton_IsEnabledChanged" />
-                <Button x:Name="SaveToDatabaseButton" Grid.Row="0" Content="Save to Database" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="570,48,0,0" Command="{Binding SaveToDbCommand}" IsEnabledChanged="SaveToDatabaseButton_IsEnabledChanged" />
+                <Button Content="Get from Database" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="425,48,0,0" Command="{Binding GetAllFromDbCommand}" IsEnabled="{Binding IsEnabled_GetAllFromDatabase}" />
+                <Button x:Name="SaveToDatabaseButton" Grid.Row="0" Content="Save to Database" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="570,48,0,0" Command="{Binding SaveToDbCommand}" IsEnabled="{Binding IsEnabled_SaveToDatabase}" />
             </Grid>
 
 

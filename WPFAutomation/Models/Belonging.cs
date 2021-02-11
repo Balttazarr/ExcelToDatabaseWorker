@@ -12,7 +12,7 @@ namespace WPFAutomation.Models
         public int Id { get; set; }
         public int PeopleId { get; set; }
         public string Name { get; set; }
-        public string Type { get; set; }
+        public string Quantity { get; set; }
 
         internal bool IsNew => (this.Id == default(int));
     }
