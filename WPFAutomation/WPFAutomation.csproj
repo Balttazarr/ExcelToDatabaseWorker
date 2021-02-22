@@ -71,6 +71,11 @@
     </ApplicationDefinition>
     <Compile Include="CommandsHelper\RelayCommand.cs" />
     <Compile Include="Converters\ColorBrushConverter.cs" />
+    <Compile Include="Converters\DateConverter.cs" />
+    <Compile Include="DataGridValidations\DateOfBirthValidation.cs" />
+    <Compile Include="DataGridValidations\NameValidation.cs" />
+    <Compile Include="DataGridValidations\HeightValidation.cs" />
+    <Compile Include="DataGridValidations\WeightValidation.cs" />
     <Compile Include="DataRepository\ConnectionStringHelper.cs" />
     <Compile Include="DataRepository\IPeopleRepository.cs" />
     <Compile Include="DataRepository\OpenDatabaseConnection.cs" />
@@ -144,7 +149,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="error.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="TextFile1.txt" />
   </ItemGroup>

@@ -16,6 +16,10 @@ namespace WPFAutomation.Models.Enums
         [Description("LastName")]
         LastNameColumn = 2,
         [Description("DateOfBirth")]
-        DateOfBirthColumn = 3
+        DateOfBirthColumn = 3,
+        [Description("Height")]
+        HeightColumn = 4,
+        [Description("Weight")]
+        WeightColumn = 5
     }
 }

@@ -11,12 +11,14 @@ using System.Windows.Data;
 using System.Windows.Media;
 using WPFAutomation.DataRepository;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace WPFAutomation.ViewModel
 {
 
     public class WorkerViewModel : ViewModelBase
     {
+        private PersonModel PersonModelRef;
         private PeopleRepository _repository;
         private ObservableCollection<PersonModel> _personList = new ObservableCollection<PersonModel>();
         private ObservableCollection<Belonging> _belongings = new ObservableCollection<Belonging>();
@@ -31,6 +33,8 @@ namespace WPFAutomation.ViewModel
         private string _IntegratedSecurityConnString;
         private CheckConnectionState _gridBackground;
         private SolidColorBrush _connectionStringButtonColor;
+
+        public bool DatabaseConnected = false;
 
 
 
@@ -134,7 +138,7 @@ namespace WPFAutomation.ViewModel
             }
         }
 
-        public ObservableCollection<Belonging> PersonThingsOwned
+        public ObservableCollection<Belonging> PersonThingsOwnedDataGrid
         {
             get
             { return _belongings; }
@@ -159,9 +163,9 @@ namespace WPFAutomation.ViewModel
                     DeletePersonCommand.RaiseCanExecuteChanged();
                     UpdatePersonCommand.RaiseCanExecuteChanged();
                     RemovePersonCommand.RaiseCanExecuteChanged();
-                    GetLanguages();
                     OnPropertyChanged();
                 }
+                GetBelongings();
 
             }
         }
@@ -247,7 +251,6 @@ namespace WPFAutomation.ViewModel
         public WorkerViewModel()
         {
             InitializeDefaultConnString();
-            _repository = new PeopleRepository(BuildConnectionString(DataSourceConnString, InitialDirectioryConnString, IntegratedSecurityConnString));
 
 
             AddPersonCommand = new RelayCommand(OnAddingPerson);
@@ -269,20 +272,35 @@ namespace WPFAutomation.ViewModel
             //PersonList = new ObservableCollection<PersonModel>(new List<PersonModel>() { new PersonModel() { ID = 1234, FirstName = "TestFirstName", LastName = "TestLastName", DateOfBirth = new DateTime(2020, 08, 16) } });
         }
 
-        private void GetLanguages()
+        private void GetBelongings()
         {
-            PersonThingsOwned.Clear();
-            var personBelongins = _repository.GetFullPersonModel(SelectedPerson.ID);
-            foreach (var item in personBelongins)
+            PersonThingsOwnedDataGrid.Clear();
+            if (_repository == null && SelectedPerson != null)
             {
-                PersonThingsOwned.Add(item);
+                SelectedPerson.ThingsOwned = new List<Belonging>();
             }
+            else if (SelectedPerson != null)
+            {
+                var personBelongins = _repository.GetFullPersonModel(SelectedPerson.ID);
+
+                var tempPerson = PersonList.ToList().FirstOrDefault(f => f == SelectedPerson);
+                if (tempPerson != null)
+                {
+                    foreach (var item in personBelongins)
+                    {
+                        tempPerson.ThingsOwned.Add(item);
+                        PersonThingsOwnedDataGrid.Add(item);
+                    }
+                    PersonList.First(fs => fs == SelectedPerson).ThingsOwned = tempPerson.ThingsOwned;
+                }
+            }
+
         }
 
 
         private bool CanFindPerson()
         {
-            if (SelectedPerson != null)
+            if (SelectedPerson != null && DatabaseConnected == true)
             {
                 return _repository.Find(SelectedPerson.ID) != null;
             }
@@ -305,7 +323,14 @@ namespace WPFAutomation.ViewModel
 
         private void OnUpdatePerson()
         {
-            _repository.Update(SelectedPerson);
+            if (MessageBox.Show("Would you like to update the information about this person", "Question",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                _repository.Update(SelectedPerson);
+            }
+            else
+            { return; }
         }
 
         internal void InitializeDefaultConnString()
@@ -374,16 +399,18 @@ namespace WPFAutomation.ViewModel
                 }
             }
 
-            //if (conn == null ? IsEnabled_SaveToDatabase = false : IsEnabled_SaveToDatabase = true)
+            _repository = new PeopleRepository(BuildConnectionString(DataSourceConnString, InitialDirectioryConnString, IntegratedSecurityConnString));
             if (_repository == null ? IsEnabled_SaveToDatabase = false : IsEnabled_SaveToDatabase = true)
             {
-                var peopleFromDB = _repository.GetAll();
-                foreach (var person in peopleFromDB)
+                var peopleRepository =_repository.GetAll();
+                foreach (var person in peopleRepository)
                 {
+                    person.ThingsOwned = new List<Belonging>();
                     PersonList.Add(person);
                 }
                 IsEnabled_UpdatePersonInDatabase = true;
                 IsEnabled_RemovePersonInDatabase = true;
+                DatabaseConnected = true;
 
             }
         }
@@ -434,8 +461,6 @@ namespace WPFAutomation.ViewModel
             PersonList.Clear();
             ReadExcelFile();
         }
-
-
 
         private void OnSaveExcel()
         {
@@ -495,10 +520,21 @@ namespace WPFAutomation.ViewModel
 
         public void SaveExcelFile(ObservableCollection<PersonModel> personModels)
         {
-            excelSave.SaveToExcel(personModels.ToList());
+            try
+            {
+                excelSave.SaveToExcel(personModels.ToList());
+                MessageBox.Show("Succesfully saved data to Excel");
+
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message);
+                //System.IO.IOException: 'The process cannot access the file 'C: \Users\CzarnyPotwor\Desktop\C#Projects\ExcelToDatabaseWorker\PeopleBelongigns.xlsx' because it is being used by another process.'
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
-
-
-
     }
 }

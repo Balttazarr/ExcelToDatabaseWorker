@@ -1,7 +1,10 @@
 ﻿//TODO TODO TODO
-
-- allow users input to determine SQL Server connection,
-- 
+- MainWindows view DataContex problem
+- new SQL commands for Lanaguages (and names)
+- new SQL commands for Nationalities 
+- validate the xlsx file with the DataBase at a given time
+- saving new object from app to excel
+- ConnectionString methods to an appropriate place
 - checking if a given database exists,
-- validation in excel/DB
+- 
 - EnumHelper???

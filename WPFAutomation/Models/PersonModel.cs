@@ -115,7 +115,5 @@ namespace WPFAutomation.Models
             return start.AddDays(_gen.Next(range));
         }
 
-
-
     }
 }

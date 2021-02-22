@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ext="clr-namespace:WPFAutomation.Converters"
         xmlns:local="clr-namespace:WPFAutomation.ViewModel"
+        xmlns:validation="clr-namespace:WPFAutomation.DataGridValidations"
         Loaded="OnWindowLoaded" Background="White"
         mc:Ignorable="d" MinHeight="750" Width="Auto" >
 
@@ -19,6 +20,10 @@
     <UserControl.DataContext>
         <local:WorkerViewModel />
     </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <ext:DateConverter x:Key="dateConverter"/>
+    </UserControl.Resources>
 
     <Grid Margin="5,10,5,0" VerticalAlignment="Top" HorizontalAlignment="Center" Height="714">
         <Grid.RowDefinitions>
@@ -77,16 +82,59 @@
                       SelectedItem="{Binding SelectedPerson,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                       EnableRowVirtualization="True"
                       AutoGenerateColumns="False"
-                      CanUserAddRows="false"
+                      CanUserAddRows="False"
                       CanUserSortColumns="False"  VerticalAlignment="Bottom" SelectionChanged="EditableDataGrid_SelectionChanged" Margin="5,0,0,10">
+                <DataGrid.RowValidationRules>
+                    <DataErrorValidationRule />
+                </DataGrid.RowValidationRules>
                 <DataGrid.Columns>
 
-                    <DataGridTextColumn Header="ID" Binding="{Binding ID}"  />
-                    <DataGridTextColumn Header="First name" Binding="{Binding FirstName}" />
-                    <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" />
-                    <DataGridTextColumn Header="Date of birth" Binding="{Binding DateOfBirth , StringFormat=dd-MM-yyyy}" />
-                    <DataGridTextColumn Header="Height" Binding="{Binding Height}"/>
-                    <DataGridTextColumn Header="Weight" Binding="{Binding Weight}"/>
+                    <DataGridTextColumn Header="ID" Binding="{Binding ID}" />
+                    <DataGridTextColumn Header="First name" >
+                        <DataGridTextColumn.Binding>
+                            <Binding Path="FirstName">
+                                <Binding.ValidationRules>
+                                    <validation:NameValidation />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </DataGridTextColumn.Binding>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Last Name" >
+                        <DataGridTextColumn.Binding>
+                            <Binding Path="LastName">
+                                <Binding.ValidationRules>
+                                    <validation:NameValidation />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </DataGridTextColumn.Binding>
+                    </DataGridTextColumn> 
+                    <DataGridTextColumn Header="Date of birth" >
+                        <DataGridTextColumn.Binding>
+                            <Binding Path="DateOfBirth"  Converter="{StaticResource dateConverter}">
+                                <Binding.ValidationRules>
+                                    <validation:DateOfBirthValidation />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </DataGridTextColumn.Binding>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Height">
+                        <DataGridTextColumn.Binding>
+                            <Binding Path="Height">
+                                <Binding.ValidationRules>
+                                    <validation:HeightValidation />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </DataGridTextColumn.Binding>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Weight">
+                        <DataGridTextColumn.Binding>
+                            <Binding Path="Weight">
+                                <Binding.ValidationRules>
+                                    <validation:WeightValidation />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </DataGridTextColumn.Binding>
+                    </DataGridTextColumn>
                     <!--<DataGridTextColumn Header="Sex" Binding="{Binding Sex}"/>
                     <DataGridTextColumn Header="Race" Binding="{Binding Race}"/>
                     <DataGridTextColumn Header="Nationality" Binding="{Binding Nationality}"/>
@@ -101,12 +149,12 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" HorizontalAlignment="Left" Margin="5">
-                    <Label Content="Languages" FontSize="13" BorderBrush="Bisque" BorderThickness="2" Margin="5,0,0,0"/>
+                    <Label Content="Things owned" FontSize="13" BorderBrush="Bisque" BorderThickness="2" Margin="5,0,0,0"/>
                 </StackPanel>
                 <DataGrid Grid.Row="1"  Name="PropertiesOfSelectedPerson" 
                       HorizontalAlignment="Left"
                       Width="171" Height="345"
-                      ItemsSource="{Binding PersonThingsOwned}"
+                      ItemsSource="{Binding PersonThingsOwnedDataGrid}"
                       EnableRowVirtualization="True"
                       AutoGenerateColumns="False"
                       CanUserAddRows="false"
