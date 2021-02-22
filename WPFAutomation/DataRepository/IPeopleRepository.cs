@@ -13,7 +13,7 @@ namespace WPFAutomation.DataRepository
         PersonModel Find(int id);
         PersonModel Update(PersonModel personModel);
         void Remove(int id);
-        List<Belonging> GetFullPersonModel(int id);
+        List<Belonging> GetThingsOwnedOfPerson(int id);
 
     }
 }

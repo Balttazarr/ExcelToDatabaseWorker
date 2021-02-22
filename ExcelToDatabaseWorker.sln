@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFAutomation", "WPFAutomation\WPFAutomation.csproj", "{C6B57C3E-FA29-4DF3-87D5-00B1A87A9595}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadExcel.Test", "LoadExcel.Test\LoadExcel.Test.csproj", "{3EC7E231-C416-413C-8EC6-D5507DC9FE21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelDBWorker.Tests", "LoadExcel.Test\ExcelDBWorker.Tests.csproj", "{3EC7E231-C416-413C-8EC6-D5507DC9FE21}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "WPFAutomation.SqlDataAccess", "WPFAutomation.SqlDataAccess\WPFAutomation.SqlDataAccess.sqlproj", "{B12E7F5D-4A16-4605-82D1-17CFF1325F04}"
 EndProject

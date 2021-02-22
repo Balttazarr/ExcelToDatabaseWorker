@@ -46,28 +46,13 @@ namespace WPFAutomation.DataRepository
             db.Execute("DELETE FROM People WHERE Id = @Id", new { id });
         }
 
-        public List<Belonging> GetFullPersonModel(int id)
+        public List<Belonging> GetThingsOwnedOfPerson(int id)
         {
-            var sql1 = "SELECT Name, Quantity FROM Belongings WHERE PeopleId = @Id";
-            var sql = " SELECT p.Id, b.PeopleId, Name, Quantity FROM People p JOIN Belongings b ON p.Id = b.PeopleId WHERE p.Id = @Id ";
-
+            //var sql1 = "SELECT Name, Quantity FROM Belongings WHERE PeopleId = @Id";
+            var sql = " SELECT b.Name, b.Quantity FROM People p JOIN Belongings b ON p.Id = b.PeopleId WHERE p.Id = @Id ";
             var belongings = db.Query<Belonging>(sql, new { Id = id}).ToList();
-            
-            
-                return belongings;
-            
-            //using (var multipleResults = db.QueryMultiple(sql, new { Id = id }))
-            //{
-            //    var person = multipleResults.Read<PersonModel>().SingleOrDefault();
+            return belongings;
 
-            //    var belongings = multipleResults.Read<Belonging>().ToList();
-            //    if (person != null && belongings != null)
-            //    {
-            //        person.ThingsOwned.AddRange(belongings);
-            //    }
-
-            //    return belongings;
-            //}
         }
 
     }

@@ -76,7 +76,6 @@
     <Compile Include="DataGridValidations\NameValidation.cs" />
     <Compile Include="DataGridValidations\HeightValidation.cs" />
     <Compile Include="DataGridValidations\WeightValidation.cs" />
-    <Compile Include="DataRepository\ConnectionStringHelper.cs" />
     <Compile Include="DataRepository\IPeopleRepository.cs" />
     <Compile Include="DataRepository\OpenDatabaseConnection.cs" />
     <Compile Include="DataRepository\PeopleRepository.cs" />

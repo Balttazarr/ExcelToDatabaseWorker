@@ -83,7 +83,7 @@
                       EnableRowVirtualization="True"
                       AutoGenerateColumns="False"
                       CanUserAddRows="False"
-                      CanUserSortColumns="False"  VerticalAlignment="Bottom" SelectionChanged="EditableDataGrid_SelectionChanged" Margin="5,0,0,10">
+                      CanUserSortColumns="False"  VerticalAlignment="Bottom" Margin="5,0,0,10">
                 <DataGrid.RowValidationRules>
                     <DataErrorValidationRule />
                 </DataGrid.RowValidationRules>
@@ -107,7 +107,7 @@
                                 </Binding.ValidationRules>
                             </Binding>
                         </DataGridTextColumn.Binding>
-                    </DataGridTextColumn> 
+                    </DataGridTextColumn>
                     <DataGridTextColumn Header="Date of birth" >
                         <DataGridTextColumn.Binding>
                             <Binding Path="DateOfBirth"  Converter="{StaticResource dateConverter}">
@@ -148,10 +148,30 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
                 <StackPanel Grid.Row="0" HorizontalAlignment="Left" Margin="5">
-                    <Label Content="Things owned" FontSize="13" BorderBrush="Bisque" BorderThickness="2" Margin="5,0,0,0"/>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Things owned" FontSize="13" BorderBrush="Bisque" BorderThickness="2" Margin="5,0,0,0"/>
                 </StackPanel>
-                <DataGrid Grid.Row="1"  Name="PropertiesOfSelectedPerson" 
+                <DockPanel Grid.Row="0" Grid.Column="1" >
+                    <ToolBarTray HorizontalAlignment="Center" VerticalAlignment="Center" Height="41" Width="69">
+                        <ToolBar Margin="10,7,-10,-7">
+                            <Button Margin="0,0,5,0" Command="{Binding AddThingCommand}" BorderThickness="1" BorderBrush="ForestGreen" ToolTip="Add an item to the list">
+                                <StackPanel>
+                                    <TextBlock Text="+"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Margin="0,0,5,0" Command="{Binding RemoveThingCommand}" BorderThickness="1" BorderBrush="PaleVioletRed" ToolTip="Delete an item from the list">
+                                <StackPanel>
+                                    <TextBlock Text="-"/>
+                                </StackPanel>
+                            </Button>
+                        </ToolBar>
+                    </ToolBarTray>
+                </DockPanel>
+                <DataGrid Grid.Row="1" Grid.ColumnSpan="2"  Name="PropertiesOfSelectedPerson" 
                       HorizontalAlignment="Left"
                       Width="171" Height="345"
                       ItemsSource="{Binding PersonThingsOwnedDataGrid}"

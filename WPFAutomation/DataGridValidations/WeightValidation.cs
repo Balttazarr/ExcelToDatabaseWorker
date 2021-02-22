@@ -12,7 +12,6 @@ namespace WPFAutomation.DataGridValidations
     public class WeightValidation : ValidationRule
     {
 
-
         public WeightValidation()
         {
 

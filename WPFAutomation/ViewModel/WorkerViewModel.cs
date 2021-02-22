@@ -28,6 +28,8 @@ namespace WPFAutomation.ViewModel
         private bool _isEnabled_GetAllFromDatabase = false;
         private bool _isEnabled_UpdatePersonInDatabase = false;
         private bool _isEnabled_RemovePersonInDatabase = false;
+        private bool _isEnabled_addThingToPerson = false;
+        private bool _isEnabled_removeThingFromPerson = false;
         private string _dataSourceConnString;
         private string _InitialDirectioryConnString;
         private string _IntegratedSecurityConnString;
@@ -149,6 +151,9 @@ namespace WPFAutomation.ViewModel
             }
         }
 
+        /// <summary>
+        /// Property that gets the selected Person from DataGrid
+        /// </summary>
         public PersonModel SelectedPerson
         {
             get
@@ -163,12 +168,17 @@ namespace WPFAutomation.ViewModel
                     DeletePersonCommand.RaiseCanExecuteChanged();
                     UpdatePersonCommand.RaiseCanExecuteChanged();
                     RemovePersonCommand.RaiseCanExecuteChanged();
+
+                    AddThingCommand.RaiseCanExecuteChanged();
+                    RemoveThingCommand.RaiseCanExecuteChanged();
+
                     OnPropertyChanged();
                 }
                 GetBelongings();
 
             }
         }
+        ///////////////////////////////////////////////////////////
 
 
         public RelayCommand AddPersonCommand { get; private set; }
@@ -177,14 +187,48 @@ namespace WPFAutomation.ViewModel
         public RelayCommand RemovePersonCommand { get; private set; }
 
 
+        public RelayCommand AddThingCommand { get; private set; }
+        public RelayCommand RemoveThingCommand { get; private set; }
+
+
+
         public RelayCommand SaveExcelCommand { get; private set; }
         public RelayCommand ReadExcelCommand { get; private set; }
         public RelayCommand SaveToDbCommand { get; private set; }
         public RelayCommand GetAllFromDbCommand { get; private set; }
 
+
+
+
         public RelayCommand CheckConnectionStringCommand { get; private set; }
 
 
+
+        public bool IsEnabled_AddThingToPerson
+        {
+            get
+            {
+                return _isEnabled_addThingToPerson;
+            }
+            set
+            {
+                _isEnabled_addThingToPerson = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsEnabled_RemoveThingFromPerson
+        {
+            get
+            {
+                return _isEnabled_removeThingFromPerson;
+            }
+            set
+            {
+                _isEnabled_removeThingFromPerson = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsEnabled_SaveToDatabase
         {
@@ -258,7 +302,8 @@ namespace WPFAutomation.ViewModel
             UpdatePersonCommand = new RelayCommand(OnUpdatePerson, CanFindPerson);
             RemovePersonCommand = new RelayCommand(OnRemovePerson, CanFindPerson);
 
-
+            AddThingCommand = new RelayCommand(OnAddThing);
+            RemoveThingCommand = new RelayCommand(OnRemoveThing);
 
             SaveExcelCommand = new RelayCommand(OnSaveExcel);
             ReadExcelCommand = new RelayCommand(OnReadExcel);
@@ -267,33 +312,80 @@ namespace WPFAutomation.ViewModel
             GetAllFromDbCommand = new RelayCommand(OnGetAllFromDB);
 
             CheckConnectionStringCommand = new RelayCommand(OnCheckingConnetionString);
+        }
 
-            //I understand it's just a test, but when we have working solution for this one - test should be only in unit tests - MD
-            //PersonList = new ObservableCollection<PersonModel>(new List<PersonModel>() { new PersonModel() { ID = 1234, FirstName = "TestFirstName", LastName = "TestLastName", DateOfBirth = new DateTime(2020, 08, 16) } });
+        //private bool CanManipulateThing()
+        //{
+        //    if (SelectedPerson != null)
+        //    {
+        //        return true;
+        //    }
+        //    return false;
+        //}
+
+        private void OnRemoveThing()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnAddThing()
+        {
+            if (SelectedPerson == null)
+            {
+                MessageBox.Show("Select  a person first!", "Select person", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return;
+            }
+            else
+            {
+                Belonging newItem = new Belonging() { Name = "NewItem" , Quantity = "1" };
+                SelectedPerson.ThingsOwned.Add(newItem);
+                PersonThingsOwnedDataGrid.Add(newItem);
+            }
+
         }
 
         private void GetBelongings()
         {
             PersonThingsOwnedDataGrid.Clear();
-            if (_repository == null && SelectedPerson != null)
-            {
-                SelectedPerson.ThingsOwned = new List<Belonging>();
-            }
-            else if (SelectedPerson != null)
-            {
-                var personBelongins = _repository.GetFullPersonModel(SelectedPerson.ID);
 
-                var tempPerson = PersonList.ToList().FirstOrDefault(f => f == SelectedPerson);
-                if (tempPerson != null)
+            if (SelectedPerson != null)
+            {
+                if (SelectedPerson.ThingsOwned == null || SelectedPerson.ThingsOwned.Count == 0)
                 {
-                    foreach (var item in personBelongins)
-                    {
-                        tempPerson.ThingsOwned.Add(item);
-                        PersonThingsOwnedDataGrid.Add(item);
-                    }
-                    PersonList.First(fs => fs == SelectedPerson).ThingsOwned = tempPerson.ThingsOwned;
+                    SelectedPerson.ThingsOwned = new List<Belonging>();
                 }
+                foreach (var item in SelectedPerson.ThingsOwned)
+                {
+                    PersonThingsOwnedDataGrid.Add(item);
+                }
+
             }
+
+
+
+
+            //if (_repository == null && SelectedPerson != null && SelectedPerson.ThingsOwned == null)
+            //{
+            //    SelectedPerson.ThingsOwned = new List<Belonging>();
+            //}
+            //else if (SelectedPerson != null)
+            //{
+            //    var personBelongins = _repository.GetFullPersonModel(SelectedPerson.ID);
+
+            //    var tempPerson = PersonList.ToList().FirstOrDefault(f => f == SelectedPerson);
+            //    if (tempPerson != null)
+            //    {
+            //        foreach (var item in personBelongins)
+            //        {
+            //            tempPerson.ThingsOwned.Add(item);
+            //            PersonThingsOwnedDataGrid.Add(item);
+            //        }
+            //        PersonList.First(fs => fs == SelectedPerson).ThingsOwned = tempPerson.ThingsOwned;
+            //    }
+            //}
+
+
+
 
         }
 
@@ -335,16 +427,25 @@ namespace WPFAutomation.ViewModel
 
         internal void InitializeDefaultConnString()
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
-            var connStringInOrder = connectionString.Split(';');
+            try
+            {
+                var connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+                var connStringInOrder = connectionString.Split(';');
 
-            DataSourceConnString = connStringInOrder[0].Remove(0, 12);
-            InitialDirectioryConnString = connStringInOrder[1].Remove(0, 16);
-            bool integratedSecurity = connStringInOrder[2] == "Integrated Security=True" ? true : false;
-            IntegratedSecurityConnString = integratedSecurity.ToString();
+                DataSourceConnString = connStringInOrder[0].Remove(0, 12);
+                InitialDirectioryConnString = connStringInOrder[1].Remove(0, 16);
+                bool integratedSecurity = connStringInOrder[2] == "Integrated Security=True" ? true : false;
+                IntegratedSecurityConnString = integratedSecurity.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There was a problem reading the ConnectionString!\n " + ex.Message);
+            }
+
 
         }
 
+        // Command for the button "Connect to database"
         private void OnCheckingConnetionString()
         {
             GetOpenDataConnection(DataSourceConnString, InitialDirectioryConnString, IntegratedSecurityConnString);
@@ -402,10 +503,12 @@ namespace WPFAutomation.ViewModel
             _repository = new PeopleRepository(BuildConnectionString(DataSourceConnString, InitialDirectioryConnString, IntegratedSecurityConnString));
             if (_repository == null ? IsEnabled_SaveToDatabase = false : IsEnabled_SaveToDatabase = true)
             {
-                var peopleRepository =_repository.GetAll();
+                var peopleRepository = _repository.GetAll();
                 foreach (var person in peopleRepository)
                 {
-                    person.ThingsOwned = new List<Belonging>();
+                    var personBelongins = _repository.GetThingsOwnedOfPerson(person.ID);
+
+                    person.ThingsOwned = personBelongins;
                     PersonList.Add(person);
                 }
                 IsEnabled_UpdatePersonInDatabase = true;
@@ -488,6 +591,7 @@ namespace WPFAutomation.ViewModel
         private void OnDeletePerson()
         {
             PersonList.Remove(SelectedPerson);
+            PersonThingsOwnedDataGrid.Clear();
         }
 
         private bool CanDeletePerson()

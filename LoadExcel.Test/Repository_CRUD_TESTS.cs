@@ -7,7 +7,7 @@ namespace LoadExcel.Test
 
     public class Repository_CRUD_TESTS
     {
-        
+
         private readonly string name = "ConnectionString";
 
         [Fact]
@@ -19,6 +19,21 @@ namespace LoadExcel.Test
             var people = repository.GetAll();
             //assert
             Assert.True(people.Count == 18);
+        }
+
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(3)]
+        [InlineData(5)]
+        [InlineData(15)]
+        public void GetThingsOwne_Should_ReturnListOfBelongings(int id)
+        {
+            var repository = new PeopleRepository("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=PeopleDB;Integrated Security=True");
+
+            var peopleBelongings = repository.GetThingsOwnedOfPerson(id);
+
+            Assert.NotNull(peopleBelongings);
         }
     }
 }

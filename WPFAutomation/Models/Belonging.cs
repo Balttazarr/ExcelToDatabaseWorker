@@ -9,6 +9,10 @@ namespace WPFAutomation.Models
 {
     public class Belonging
     {
+        public Belonging()
+        {
+
+        }
         public int Id { get; set; }
         public int PeopleId { get; set; }
         public string Name { get; set; }
